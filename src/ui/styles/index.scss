@@ -2,6 +2,8 @@ $threeBoxBlack: #181F21;
 $threeBoxBlackHover: rgb(47, 56, 58);
 $borderColor: rgb(236, 236, 236);
 $backgroundHue: rgb(247, 247, 247);
+$lighterFont: #747677;
+$lightestFont: #b1b1b1;
 
 p,
 h1,
@@ -43,6 +45,25 @@ input {
   box-sizing: border-box;
 }
 
+.textButton {
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 0;
+  transition: background-color .4s ease;
+  font-family: 'Lato', sans-serif;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $threeBoxBlack;
+  font-size: 16px;
+
+  &:hover {
+    background-color: transparent;
+    border: none;
+  }
+}
+
 .coverPage {
   width: 100vw;
   height: 100vh;
@@ -75,7 +96,7 @@ input {
 }
 
 .topics {
-  width: 24%;
+  width: 28%;
   height: 100%;
   background-color: $backgroundHue;
   display: flex;
@@ -118,17 +139,64 @@ input {
     align-items: flex-start;
     box-sizing: border-box;
   }
+
+  .topics_list_header {
+    color: $lightestFont;
+  }
 }
 
 .chatPage_dialogue {
-  width: 56%;
+  width: 48%;
   height: 100%;
 }
 
 .chatPage_members {
   border-left: 1px solid rgb(242, 242, 242);
-  width: 20%;
+  width: 24%;
   height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $lightestFont;
+    font-weight: 900;
+
+    &:hover {
+      color: $threeBoxBlack;
+
+      span {
+        background-color: $threeBoxBlack;
+      }
+    }
+
+    span {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: $lightestFont;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 8px;
+
+      img {
+        transform: rotate(45deg);
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .chatPage_members_header {
+    color: $lightestFont;
+  }
 }
 
 .modal__container {
@@ -150,7 +218,7 @@ input {
   min-height: 320px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: column;
   box-shadow: 0 6px 10px 0 #00000025, 0 16px 24px 0 #0000002f;
   text-align: center;
@@ -277,4 +345,18 @@ input {
 .app_modals-leave.app_modals-leave-active {
   opacity: 0.01;
   transition: opacity 400ms ease-in;
+}
+
+.userTile {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: $threeBoxBlack;
+  }
 }

@@ -2,8 +2,10 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {
-  NewTopicModal,
   ModalBackground,
+  NewTopicModal,
+  AddNewModeratorModal,
+  AddNewMemberModal,
 } from '../components/Modals';
 
 const AppModals = (props) => {
@@ -12,7 +14,9 @@ const AppModals = (props) => {
     handleAppModals,
     handleCreateTopic,
     isTopicOpen,
-    isTopicClosed
+    isTopicClosed,
+    showAddNewModeratorModal,
+    showAddNewMemberModal
   } = props;
 
   return (
@@ -31,8 +35,25 @@ const AppModals = (props) => {
         />
       )}
 
-      {(showNewTopicModal)
-        && <ModalBackground />}
+      {showAddNewModeratorModal && (
+        <AddNewModeratorModal
+          handleAppModals={handleAppModals}
+          // handleCreateTopic={handleCreateTopic}
+          key="AddNewModeratorModal"
+        />
+      )}
+
+      {showAddNewMemberModal && (
+        <AddNewMemberModal
+          handleAppModals={handleAppModals}
+          key="AddNewMemberModal"
+        />
+      )}
+
+      {(showNewTopicModal
+        || showAddNewModeratorModal
+        || showAddNewMemberModal
+      ) && <ModalBackground />}
 
     </ReactCSSTransitionGroup>
   )

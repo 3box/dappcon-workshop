@@ -9,7 +9,7 @@ const Chat = ({ handleAppModals }) => (
   <div className="chatPage">
     <Topics handleAppModals={handleAppModals} />
     <Dialogue />
-    <Members />
+    <Members handleAppModals={handleAppModals} />
   </div>
 );
 

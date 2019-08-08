@@ -20,9 +20,20 @@ class App extends Component {
       box: {},
       chanSpace: {},
       topicManager: {},
+      openTopics: {},
       topicList: [],
+      threadMemberList: [],
+      threadModeratorList: [],
+      threadData: [],
+      topicTitle: '',
+      activeTopic: '',
       newTopicError: '',
+      threadACError: '',
+      topicError: '',
+      postMsg: '',
       showNewTopicModal: false,
+      showAddNewModeratorModal: false,
+      showAddNewMemberModal: false,
       isTopicOpen: false,
       isTopicClosed: false,
     };
@@ -71,15 +82,19 @@ class App extends Component {
   }
 
   handleCreateTopic = () => {
-    const { topicName, membersTopic } = this.state
+    const {
+      topicName,
+      membersTopic,
+      topicManager,
+    } = this.state
     // const name = topicName.value;
 
     if (!topicName) {
       this.setState({ newTopicError: 'No topic name set!' });
-      return
+      return;
     }
 
-    window.topicManager.claimTopic(topicName, membersTopic, (err, res) => {
+    topicManager.claimTopic(topicName, membersTopic, (err, res) => {
       if (err) {
         this.setState({ newTopicError: err });
         return
@@ -91,7 +106,88 @@ class App extends Component {
   handleAppModals = (modalName) => {
     const modalStateName = `show${modalName}`;
     const modalState = this.state[modalStateName];
+    console.log('modalStateName', modalStateName);
+    console.log('modalState', modalState);
     this.setState({ [modalStateName]: !modalState });
+  }
+
+  viewTopic = (topic) => {
+    const { openTopics, activeTopic, topicManager, chanSpace } = this.state;
+    console.log('active', topic)
+    this.setState({ topicTitle: topic });
+    if (openTopics[topic]) {
+      console.log('is open')
+      this.setState({ activeTopic: openTopics[topic] });
+      this.updateThreadData()
+      this.updateThreadCapabilities()
+      return
+    }
+
+    topicManager.getOwner(topic, (err, owner) => {
+      topicManager.getMembers(topic, (err, members) => {
+        if (!chanSpace) {
+          this.setState({ topicError: 'Not fully logged in, try again in a moment' });
+          return
+        }
+        console.log('joining thread')
+        chanSpace.joinThread(topic, { firstModerator: owner, members }).then(thread => {
+          openTopics[topic] = thread
+          console.log(thread);
+          this.setState({ activeTopic: openTopics[topic] });
+          thread.onUpdate(() => {
+            this.updateThreadData();
+          })
+          thread.onNewCapabilities(() => {
+            this.updateThreadCapabilities();
+          })
+          this.updateThreadData();
+          this.updateThreadCapabilities();
+        })
+      })
+    })
+  }
+
+  updateThreadData = async () => {
+    const { activeTopic } = this.state;
+    // threadData.innerHTML = ''
+    this.updateThreadError();
+    let threadData;
+    const posts = activeTopic.getPosts();
+    posts.map(post => threadData.push(post))
+    // threadData.innerHTML += post.author + ': <br />' + post.message + '<br /><br />'
+    // threadData.innerHTML += `<button id="` + post.postId + `"onClick="window.deletePost(` + post.postId + `)" type="button" class="btn btn btn-primary" >Delete</button>` + '<br /><br />'
+    this.setState({ threadData });
+  }
+
+  updateThreadCapabilities = async () => {
+    const { activeTopic } = this.state;
+    let threadMemberList;
+    if (activeTopic._members) {
+      const members = activeTopic.listMembers();
+      members.map(member => threadMemberList.push(member));
+      // threadMemberList.innerHTML += member + '<br />'
+    };
+    this.setState({ threadMemberList });
+
+    let threadModeratorList;
+    const moderators = activeTopic.listModerators();
+    moderators.map(moderator => threadModeratorList.push(moderator));
+    // threadModeratorList.innerHTML += moderator + ' (mod)<br />'
+    this.setState({ threadModeratorList });
+  }
+
+  updateThreadError = (e = '') => {
+    this.setState({ threadACError: e });
+  }
+
+  getProfileHtml = async (elementId, id) => {
+    const profile = await window.Box.getProfile(id)
+    console.log(profile);
+  }
+
+  postThread = () => {
+    const { activeTopic, postMsg } = this.state;
+    activeTopic.post(postMsg).catch(this.updateThreadError)
   }
 
   render() {
@@ -100,12 +196,16 @@ class App extends Component {
       showNewTopicModal,
       isTopicOpen,
       isTopicClosed,
+      showAddNewModeratorModal,
+      showAddNewMemberModal,
     } = this.state;
 
     return (
       <React.Fragment>
         <AppModals
           showNewTopicModal={showNewTopicModal}
+          showAddNewModeratorModal={showAddNewModeratorModal}
+          showAddNewMemberModal={showAddNewMemberModal}
           isTopicOpen={isTopicOpen}
           isTopicClosed={isTopicClosed}
           handleAppModals={this.handleAppModals}

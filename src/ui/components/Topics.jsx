@@ -10,8 +10,8 @@ const Topics = ({ topicList, handleAppModals }) => (
       <img src="" alt="profile" className="topics_nav_profile" />
     </div>
     <div className="topics_list">
-      <p>
-        Topics
+      <p className="topics_list_header">
+        TOPICS
       </p>
       <ul>
 
