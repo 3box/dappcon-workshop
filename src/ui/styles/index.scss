@@ -1,0 +1,280 @@
+$threeBoxBlack: #181F21;
+$threeBoxBlackHover: rgb(47, 56, 58);
+$borderColor: rgb(236, 236, 236);
+$backgroundHue: rgb(247, 247, 247);
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+button {
+  background-color: $threeBoxBlack;
+  color: white;
+  height: 54px;
+  cursor: pointer;
+
+  border-radius: 3px;
+  padding: 14px 20px;
+  transition: background-color .4s ease;
+  border: solid 2px $threeBoxBlack;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: .77px;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: $threeBoxBlackHover;
+    border-color: $threeBoxBlackHover;
+  }
+}
+
+input {
+  height: 54px;
+  border-radius: 3px;
+  padding: 14px 20px;
+  border: solid 1px $borderColor;
+  box-sizing: border-box;
+}
+
+.coverPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .coverPage_hero {
+    width: 60%;
+  }
+
+  .coverPage_ui {
+    width: 40%;
+  }
+}
+
+.chatPage {
+  width: 100vw;
+  height: 100vh;
+  min-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topics {
+  width: 24%;
+  height: 100%;
+  background-color: $backgroundHue;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    width: 40%
+  }
+
+  button {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .topics_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .topics_nav_profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: $threeBoxBlack;
+  }
+
+  .topics_list {
+    height: 80%;
+    width: 100%;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    box-sizing: border-box;
+  }
+}
+
+.chatPage_dialogue {
+  width: 56%;
+  height: 100%;
+}
+
+.chatPage_members {
+  border-left: 1px solid rgb(242, 242, 242);
+  width: 20%;
+  height: 100%;
+}
+
+.modal__container {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+}
+
+
+.modal {
+  background: white;
+  border-radius: 6px;
+  width: 380px;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  box-shadow: 0 6px 10px 0 #00000025, 0 16px 24px 0 #0000002f;
+  text-align: center;
+  z-index: 7;
+  position: relative;
+
+  p {
+    line-height: 24px;
+    font-size: 16px;
+  }
+
+  form {
+    text-align: center;
+    margin-top: 2em;
+  }
+
+  img {
+    width: 240px;
+  }
+
+  h2 {
+    margin-bottom: 16px;
+  }
+
+  .modal_form_input {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    border-radius: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+}
+
+.modal_form {
+  padding: 60px 50px 30px 50px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.modal_options {
+  padding: 30px 50px 30px 50px;
+  background-color: $backgroundHue;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.modal_options_menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.modal_options_menu_choice {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  label {
+    margin-right: 6px;
+  }
+}
+
+.modal_overlay {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal_closeModal {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background-color: $threeBoxBlack;
+  color: white;
+  border-radius: 50% !important;
+  width: 26px !important;
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+  font-weight: 900;
+  z-index: 1113;
+
+  img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.app_modals-enter {
+  opacity: .01;
+}
+
+.app_modals-enter.app_modals-enter-active {
+  opacity: 1;
+  transition: opacity 400ms ease-in-out;
+}
+
+.app_modals-leave {
+  opacity: 1;
+}
+
+.app_modals-leave.app_modals-leave-active {
+  opacity: 0.01;
+  transition: opacity 400ms ease-in;
+}
