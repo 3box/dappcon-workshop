@@ -13,17 +13,19 @@ class ProfilePicture extends Component {
   }
 
   async componentDidMount() {
-    const {
-      author,
-    } = this.props;
-    const profile = await Box.getProfile(author);
-    this.setState({ profile });
+    if (this.props.author) {
+      console.log('author', this.props.author);
+      const profile = await Box.getProfile(this.props.author);
+      console.log('profpic', profile);
+      this.setState({ profile });
+    }
   }
 
   render() {
     const {
       address,
       profilePicture,
+      isModerator
     } = this.props;
     const { profile } = this.state;
     const isProfile = !!Object.keys(profile).length;
@@ -37,6 +39,8 @@ class ProfilePicture extends Component {
     } else if (isProfile) {
       src = `https://ipfs.infura.io/ipfs/${profile.image[0].contentUrl['/']}`
     }
+
+    console.log(src);
 
     if (src) return (
       <img

@@ -16,6 +16,10 @@ const Chat = (props) => {
     threadData,
     threadMemberList,
     openTopics,
+    handleFormChange,
+    postThread,
+    postMsg,
+    threadModeratorList,
   } = props;
 
   return (
@@ -30,14 +34,22 @@ const Chat = (props) => {
         // strings
         myAddress={myAddress}
       />
+
       <Dialogue
         topicTitle={topicTitle}
         threadData={threadData}
         openTopics={openTopics}
+        myProfile={myProfile}
+        postMsg={postMsg}
+        handleFormChange={handleFormChange}
+        postThread={postThread}
+        myAddress={myAddress}
       />
+
       <Members
         handleAppModals={handleAppModals}
         threadMemberList={threadMemberList}
+        threadModeratorList={threadModeratorList}
       />
     </div>
   )

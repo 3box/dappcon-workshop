@@ -9,9 +9,10 @@ export const ModalBackground = () => <div className="modal_overlay" />;
 export const NewTopicModal = (props) => {
   const {
     handleAppModals,
-    isTopicOpen,
-    isTopicClosed,
-    handleTopicModalRadio,
+    isMembersOnly,
+    handleCreateTopic,
+    topicName,
+    handleFormChange
   } = props;
 
   return (
@@ -30,6 +31,8 @@ export const NewTopicModal = (props) => {
             className="modal_form_input"
             type="text"
             placeholder="Name your topic"
+            value={topicName}
+            onChange={e => handleFormChange(e, 'topicName')}
           />
         </div>
 
@@ -44,10 +47,11 @@ export const NewTopicModal = (props) => {
               </label>
               <input
                 type="radio"
-                name="address"
-                value={isTopicOpen}
-                checked={isTopicOpen}
-                onChange={handleTopicModalRadio}
+                name="members"
+                // checked={!isMembersOnly}
+                defaultChecked
+                value={false}
+                onChange={e => handleFormChange(e, 'isMembersOnly')}
                 id="topicOpen"
               />
             </div>
@@ -56,28 +60,35 @@ export const NewTopicModal = (props) => {
               <label for="topicClosed">
                 Members
               </label>
+              {console.log('isMembersOnly', isMembersOnly)}
               <input
                 type="radio"
-                name="address"
-                value={isTopicClosed}
-                checked={isTopicClosed}
-                onChange={handleTopicModalRadio}
-                id="topicClosed"
+                name="members"
+                value={true}
+                // checked={isMembersOnly}
+                onChange={e => handleFormChange(e, 'isMembersOnly')}
+                id="isMembersOnly"
               />
             </div>
           </div>
         </div>
 
-        <button>
+        <button
+          onClick={handleCreateTopic}
+        >
           CREATE
         </button>
       </div>
     </div>
   )
 };
+
 export const AddNewModeratorModal = (props) => {
   const {
     handleAppModals,
+    addThreadMod,
+    handleFormChange,
+    threadMod
   } = props;
 
   return (
@@ -96,10 +107,12 @@ export const AddNewModeratorModal = (props) => {
             className="modal_form_input"
             type="text"
             placeholder="Paste Eth address"
+            value={threadMod}
+            onChange={e => handleFormChange(e, 'threadMod')}
           />
         </div>
 
-        <button>
+        <button onClick={addThreadMod}>
           ADD
         </button>
       </div>
@@ -110,6 +123,9 @@ export const AddNewModeratorModal = (props) => {
 export const AddNewMemberModal = (props) => {
   const {
     handleAppModals,
+    addThreadMember,
+    threadMember,
+    handleFormChange
   } = props;
 
   return (
@@ -128,10 +144,12 @@ export const AddNewMemberModal = (props) => {
             className="modal_form_input"
             type="text"
             placeholder="Paste Eth address"
+            value={threadMember}
+            onChange={e => handleFormChange(e, 'threadMember')}
           />
         </div>
 
-        <button>
+        <button onClick={addThreadMember}>
           ADD
         </button>
       </div>

@@ -201,6 +201,17 @@ input {
   padding: 20px;
   box-sizing: border-box;
   overflow-y: scroll;
+  position: relative;
+}
+
+.postEntry {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .chatPage_dialogue_header {

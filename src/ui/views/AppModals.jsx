@@ -13,10 +13,15 @@ const AppModals = (props) => {
     showNewTopicModal,
     handleAppModals,
     handleCreateTopic,
-    isTopicOpen,
-    isTopicClosed,
+    isMembersOnly,
     showAddNewModeratorModal,
-    showAddNewMemberModal
+    showAddNewMemberModal,
+    topicName,
+    handleFormChange,
+    addThreadMod,
+    threadMod,
+    threadMember,
+    addThreadMember
   } = props;
 
   return (
@@ -29,23 +34,29 @@ const AppModals = (props) => {
         <NewTopicModal
           handleAppModals={handleAppModals}
           handleCreateTopic={handleCreateTopic}
-          isTopicOpen={isTopicOpen}
-          isTopicClosed={isTopicClosed}
+          handleFormChange={handleFormChange}
+          isMembersOnly={isMembersOnly}
+          topicName={topicName}
           key="NewTopicModal"
         />
       )}
 
       {showAddNewModeratorModal && (
         <AddNewModeratorModal
+          handleFormChange={handleFormChange}
           handleAppModals={handleAppModals}
-          // handleCreateTopic={handleCreateTopic}
+          addThreadMod={addThreadMod}
+          threadMod={threadMod}
           key="AddNewModeratorModal"
         />
       )}
 
       {showAddNewMemberModal && (
         <AddNewMemberModal
+          handleFormChange={handleFormChange}
+          addThreadMember={addThreadMember}
           handleAppModals={handleAppModals}
+          threadMember={threadMember}
           key="AddNewMemberModal"
         />
       )}

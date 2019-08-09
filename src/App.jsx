@@ -32,12 +32,13 @@ class App extends Component {
       threadACError: '',
       topicError: '',
       postMsg: '',
+      topicName: '',
       threadMember: '',
+      threadMod: '',
       showNewTopicModal: false,
       showAddNewModeratorModal: false,
       showAddNewMemberModal: false,
-      isTopicOpen: false,
-      isTopicClosed: false,
+      isMembersOnly: false,
       isAppReady: false,
     };
   }
@@ -92,7 +93,7 @@ class App extends Component {
   handleCreateTopic = () => {
     const {
       topicName,
-      membersTopic,
+      isMembersOnly,
       topicManager,
     } = this.state
     // const name = topicName.value;
@@ -102,31 +103,28 @@ class App extends Component {
       return;
     }
 
-    topicManager.claimTopic(topicName, membersTopic, (err, res) => {
+    topicManager.claimTopic(topicName, isMembersOnly, (err, res) => {
       if (err) {
         this.setState({ newTopicError: err });
         return
       }
       this.addToTopicList(topicName);
-    })
+    });
+    this.handleAppModals('NewTopicModal');
   }
 
   handleAppModals = (modalName) => {
     const modalStateName = `show${modalName}`;
     const modalState = this.state[modalStateName];
-    console.log('modalStateName', modalStateName);
-    console.log('modalState', modalState);
     this.setState({ [modalStateName]: !modalState });
   }
 
   handleViewTopic = (topic) => {
     const { openTopics, topicManager, chanSpace } = this.state;
-    console.log('active', topic);
     this.setState({ topicTitle: topic });
     if (openTopics[topic]) {
-      console.log('is open')
       this.setState({ activeTopic: openTopics[topic] });
-      this.updateThreadData()
+      this.updateThreadPosts()
       this.updateThreadCapabilities()
       return
     }
@@ -137,34 +135,31 @@ class App extends Component {
           this.setState({ topicError: 'Not fully logged in, try again in a moment' });
           return
         }
-        console.log('joining thread')
+
         const thread = await chanSpace.joinThread(topic, { firstModerator: owner, members });
         openTopics[topic] = thread;
-        console.log('threadfetched', thread);
         this.setState({ activeTopic: openTopics[topic] });
+
         thread.onUpdate(() => {
-          this.updateThreadData();
+          this.updateThreadPosts();
         });
 
         thread.onNewCapabilities(() => {
           this.updateThreadCapabilities();
         });
 
-        this.updateThreadData();
+        this.updateThreadPosts();
         this.updateThreadCapabilities();
       })
     })
   }
 
-  updateThreadData = async () => {
+  updateThreadPosts = async () => {
     const { activeTopic } = this.state;
-    // threadData.innerHTML = ''
     this.updateThreadError();
     let threadData = [];
     const posts = await activeTopic.getPosts();
     posts.map(post => threadData.push(post))
-    // threadData.innerHTML += post.author + ': <br />' + post.message + '<br /><br />'
-    // threadData.innerHTML += `<button id="` + post.postId + `"onClick="window.deletePost(` + post.postId + `)" type="button" class="btn btn btn-primary" >Delete</button>` + '<br /><br />'
     this.setState({ threadData });
   }
 
@@ -174,7 +169,6 @@ class App extends Component {
     if (activeTopic._members) {
       const members = await activeTopic.listMembers();
       members.map(member => threadMemberList.push(member));
-      // threadMemberList.innerHTML += member + '<br />'
     };
     this.setState({ threadMemberList });
 
@@ -189,37 +183,49 @@ class App extends Component {
     this.setState({ threadACError: e });
   }
 
-  updateProfile = async (id) => {
-    const profile = await Box.getProfile(id);
-    console.log(profile);
+  postThread = async () => {
+    const { activeTopic, postMsg } = this.state;
+    try {
+      await activeTopic.post(postMsg);
+      this.setState({ postMsg: '' });
+    } catch (error) {
+      this.updateThreadError(error);
+    }
   }
 
-  postThread = () => {
-    const { activeTopic, postMsg } = this.state;
-    activeTopic.post(postMsg).catch(this.updateThreadError)
+  handleFormChange = (e, property) => {
+    this.setState({ [property]: e.target.value });
   }
 
   deletePost = (el) => {
     const { activeTopic } = this.state;
     activeTopic.deletePost(el.id).then(res => {
-      this.updateThreadData()
+      this.updateThreadPosts()
     }).catch(this.updateThreadError);
   }
 
-  addThreadMember = () => { // interface value
+  addThreadMember = async () => { // interface value
     const { activeTopic, threadMember } = this.state;
-    const id = threadMember;
-    activeTopic.addMember(id).then(res => {
-      this.updateThreadCapabilities()
-    }).catch(this.updateThreadError)
+    console.log('activeTopic', activeTopic);
+    console.log('threadMember', threadMember);
+    try {
+      await activeTopic.addMember(threadMember);
+      this.updateThreadCapabilities();
+      this.setState({ threadMember: '' });
+    } catch (error) {
+      this.updateThreadError(error);
+    }
   }
 
-  addThreadMod = () => { // interface value
+  addThreadMod = async () => { // interface value
     const { activeTopic, threadMod } = this.state;
-    const id = threadMod;
-    activeTopic.addModerator(id).then(res => {
-      this.updateThreadCapabilities()
-    }).catch(this.updateThreadError)
+    try {
+      await activeTopic.addModerator(threadMod);
+      this.updateThreadCapabilities();
+      this.setState({ threadMod: '' });
+    } catch (error) {
+      this.updateThreadError(error);
+    }
   };
 
   syncComplete = (res) => {
@@ -231,8 +237,7 @@ class App extends Component {
     const {
       topicList,
       showNewTopicModal,
-      isTopicOpen,
-      isTopicClosed,
+      isMembersOnly,
       showAddNewModeratorModal,
       showAddNewMemberModal,
       myProfile,
@@ -242,6 +247,11 @@ class App extends Component {
       threadData,
       threadMemberList,
       openTopics,
+      postMsg,
+      topicName,
+      threadMod,
+      threadMember,
+      threadModeratorList
     } = this.state;
 
     console.log(this.state);
@@ -253,10 +263,15 @@ class App extends Component {
             showNewTopicModal={showNewTopicModal}
             showAddNewModeratorModal={showAddNewModeratorModal}
             showAddNewMemberModal={showAddNewMemberModal}
-            isTopicOpen={isTopicOpen}
-            isTopicClosed={isTopicClosed}
+            isMembersOnly={isMembersOnly}
+            topicName={topicName}
+            threadMod={threadMod}
+            threadMember={threadMember}
             handleAppModals={this.handleAppModals}
             handleCreateTopic={this.handleCreateTopic}
+            handleFormChange={this.handleFormChange}
+            addThreadMod={this.addThreadMod}
+            addThreadMember={this.addThreadMember}
           />
 
           <Switch>
@@ -277,9 +292,13 @@ class App extends Component {
                   topicTitle={topicTitle}
                   threadData={threadData}
                   threadMemberList={threadMemberList}
+                  threadModeratorList={threadModeratorList}
                   openTopics={openTopics}
+                  postMsg={postMsg}
                   handleAppModals={this.handleAppModals}
                   handleViewTopic={this.handleViewTopic}
+                  postThread={this.postThread}
+                  handleFormChange={this.handleFormChange}
                 />
               )}
             />
