@@ -5,12 +5,42 @@ import Dialogue from '../components/Dialogue';
 import Members from '../components/Members';
 import '../styles/index.scss';
 
-const Chat = ({ handleAppModals }) => (
-  <div className="chatPage">
-    <Topics handleAppModals={handleAppModals} />
-    <Dialogue />
-    <Members handleAppModals={handleAppModals} />
-  </div>
-);
+const Chat = (props) => {
+  const {
+    handleAppModals,
+    topicList,
+    myProfile,
+    myAddress,
+    handleViewTopic,
+    topicTitle,
+    threadData,
+    threadMemberList,
+    openTopics,
+  } = props;
+
+  return (
+    <div className="chatPage">
+      <Topics
+        // funcs
+        handleAppModals={handleAppModals}
+        handleViewTopic={handleViewTopic}
+        // objects
+        myProfile={myProfile}
+        topicList={topicList}
+        // strings
+        myAddress={myAddress}
+      />
+      <Dialogue
+        topicTitle={topicTitle}
+        threadData={threadData}
+        openTopics={openTopics}
+      />
+      <Members
+        handleAppModals={handleAppModals}
+        threadMemberList={threadMemberList}
+      />
+    </div>
+  )
+};
 
 export default Chat;

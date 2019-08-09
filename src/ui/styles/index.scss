@@ -2,9 +2,11 @@ $threeBoxBlack: #181F21;
 $threeBoxBlackHover: rgb(47, 56, 58);
 $borderColor: rgb(236, 236, 236);
 $backgroundHue: rgb(247, 247, 247);
+$backgroundHueDark: rgb(208, 208, 208);
 $lighterFont: #747677;
 $lightestFont: #b1b1b1;
 
+ul,
 p,
 h1,
 h2,
@@ -13,6 +15,7 @@ h4,
 h5,
 h6 {
   margin: 0;
+  padding: 0;
 }
 
 button {
@@ -45,12 +48,20 @@ input {
   box-sizing: border-box;
 }
 
+.profilePicture {
+  min-width: 40px;
+  min-height: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: $threeBoxBlack;
+}
+
 .textButton {
   background-color: transparent;
   border-radius: 5px;
   padding: 0;
   transition: background-color .4s ease;
-  font-family: 'Lato', sans-serif;
   border: none;
   display: flex;
   justify-content: center;
@@ -83,6 +94,23 @@ input {
 
   .coverPage_ui {
     width: 40%;
+  }
+}
+
+.dialogue_post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.dialogue_post_content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  p {
+    padding: 10px 0 0 8px;
   }
 }
 
@@ -120,34 +148,67 @@ input {
     padding: 12px 20px;
     width: 100%;
     box-sizing: border-box;
-  }
 
-  .topics_nav_profile {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: $threeBoxBlack;
+    a {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
   }
 
   .topics_list {
     height: 80%;
     width: 100%;
-    padding: 12px 20px;
+    padding: 12px 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     box-sizing: border-box;
+
+    button {
+      // margin-bottom: 6px;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    ul {
+      width: 100%;
+
+      li {
+        width: 100%;
+        transition: all .2s ease-in-out;
+        padding-left: 20px;
+        box-sizing: border-box;
+
+        &:hover {
+          background-color: $backgroundHueDark;
+        }
+      }
+    }
   }
 
   .topics_list_header {
     color: $lightestFont;
+    margin-bottom: 18px;
+    padding-left: 20px;
   }
 }
 
 .chatPage_dialogue {
   width: 48%;
-  height: 100%;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+.chatPage_dialogue_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 20px;
 }
 
 .chatPage_members {
