@@ -86,7 +86,7 @@ export const NewTopicModal = (props) => {
 export const AddNewModeratorModal = (props) => {
   const {
     handleAppModals,
-    addThreadMod,
+    handleAddThreadMod,
     handleFormChange,
     threadMod
   } = props;
@@ -112,7 +112,7 @@ export const AddNewModeratorModal = (props) => {
           />
         </div>
 
-        <button onClick={addThreadMod}>
+        <button onClick={handleAddThreadMod}>
           ADD
         </button>
       </div>
@@ -123,7 +123,7 @@ export const AddNewModeratorModal = (props) => {
 export const AddNewMemberModal = (props) => {
   const {
     handleAppModals,
-    addThreadMember,
+    handleAddThreadMember,
     threadMember,
     handleFormChange
   } = props;
@@ -149,7 +149,7 @@ export const AddNewMemberModal = (props) => {
           />
         </div>
 
-        <button onClick={addThreadMember}>
+        <button onClick={handleAddThreadMember}>
           ADD
         </button>
       </div>

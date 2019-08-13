@@ -51,8 +51,8 @@ input {
 .profilePicture {
   min-width: 40px;
   min-height: 40px;
-  width: 40px;
-  height: 40px;
+  max-width: 40px;
+  max-height: 40px;
   border-radius: 50%;
   background-color: $threeBoxBlack;
 }
@@ -104,6 +104,10 @@ input {
   margin-bottom: 16px;
 }
 
+.dialogue_post_delete {
+  width: 24px;
+}
+
 .dialogue_post_content {
   display: flex;
   justify-content: flex-start;
@@ -139,6 +143,10 @@ input {
   button {
     width: 100%;
     border-radius: 0;
+  }
+
+  .topics_newTopic {
+    height: 66px;
   }
 
   .topics_nav {
@@ -198,7 +206,7 @@ input {
 .chatPage_dialogue {
   width: 48%;
   height: 100vh;
-  padding: 20px;
+  // padding: 20px;
   box-sizing: border-box;
   overflow-y: scroll;
   position: relative;
@@ -212,6 +220,14 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
+  input {
+    width: 80%;
+  }
+}
+
+.postEntry_image {
+  padding: 6px 20px;
 }
 
 .chatPage_dialogue_header {
@@ -220,13 +236,18 @@ input {
   justify-content: flex-start;
   align-items: flex-start;
   margin-bottom: 20px;
+  padding: 12px 20px;
+}
+
+.chatPage_dialogue_posts {
+  padding: 12px 20px;
 }
 
 .chatPage_members {
   border-left: 1px solid rgb(242, 242, 242);
   width: 24%;
   height: 100%;
-  padding: 20px;
+  // padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -265,10 +286,20 @@ input {
       }
     }
   }
+}
 
-  .chatPage_members_header {
-    color: $lightestFont;
-  }
+.chatPage_members_header {
+  color: $lightestFont;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 12px 20px;
+}
+
+.chatPage_members_members {
+  padding: 12px 20px;
 }
 
 .modal__container {

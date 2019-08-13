@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import {
@@ -8,66 +8,94 @@ import {
   AddNewMemberModal,
 } from '../components/Modals';
 
-const AppModals = (props) => {
-  const {
-    showNewTopicModal,
-    handleAppModals,
-    handleCreateTopic,
-    isMembersOnly,
-    showAddNewModeratorModal,
-    showAddNewMemberModal,
-    topicName,
-    handleFormChange,
-    addThreadMod,
-    threadMod,
-    threadMember,
-    addThreadMember
-  } = props;
+class AppModals extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
 
-  return (
-    <ReactCSSTransitionGroup
-      transitionName="app_modals"
-      transitionEnterTimeout={150}
-      transitionLeaveTimeout={150}
-    >
-      {showNewTopicModal && (
-        <NewTopicModal
-          handleAppModals={handleAppModals}
-          handleCreateTopic={handleCreateTopic}
-          handleFormChange={handleFormChange}
-          isMembersOnly={isMembersOnly}
-          topicName={topicName}
-          key="NewTopicModal"
-        />
-      )}
+  handleCreateTopic = () => {
+    const {
+      topicName,
+      isMembersOnly,
+      topicManager,
+    } = this.props;
 
-      {showAddNewModeratorModal && (
-        <AddNewModeratorModal
-          handleFormChange={handleFormChange}
-          handleAppModals={handleAppModals}
-          addThreadMod={addThreadMod}
-          threadMod={threadMod}
-          key="AddNewModeratorModal"
-        />
-      )}
+    if (!topicName) {
+      this.setState({ newTopicError: 'No topic name set!' });
+      return;
+    }
 
-      {showAddNewMemberModal && (
-        <AddNewMemberModal
-          handleFormChange={handleFormChange}
-          addThreadMember={addThreadMember}
-          handleAppModals={handleAppModals}
-          threadMember={threadMember}
-          key="AddNewMemberModal"
-        />
-      )}
+    topicManager.claimTopic(topicName, isMembersOnly, (err, res) => {
+      if (err) {
+        this.setState({ newTopicError: err });
+        return
+      }
+      this.addToTopicList(topicName);
+    });
+    this.handleAppModals('NewTopicModal');
+  }
 
-      {(showNewTopicModal
-        || showAddNewModeratorModal
-        || showAddNewMemberModal
-      ) && <ModalBackground />}
+  render() {
+    const {
+      showNewTopicModal,
+      handleAppModals,
+      isMembersOnly,
+      showAddNewModeratorModal,
+      showAddNewMemberModal,
+      topicName,
+      handleFormChange,
+      handleAddThreadMod,
+      threadMod,
+      threadMember,
+      handleAddThreadMember
+    } = this.props;
 
-    </ReactCSSTransitionGroup>
-  )
-};
+    return (
+      <ReactCSSTransitionGroup
+        transitionName="app_modals"
+        transitionEnterTimeout={150}
+        transitionLeaveTimeout={150}
+      >
+        {showNewTopicModal && (
+          <NewTopicModal
+            handleAppModals={handleAppModals}
+            handleCreateTopic={this.handleCreateTopic}
+            handleFormChange={handleFormChange}
+            isMembersOnly={isMembersOnly}
+            topicName={topicName}
+            key="NewTopicModal"
+          />
+        )}
+
+        {showAddNewModeratorModal && (
+          <AddNewModeratorModal
+            handleFormChange={handleFormChange}
+            handleAppModals={handleAppModals}
+            handleAddThreadMod={handleAddThreadMod}
+            threadMod={threadMod}
+            key="AddNewModeratorModal"
+          />
+        )}
+
+        {showAddNewMemberModal && (
+          <AddNewMemberModal
+            handleFormChange={handleFormChange}
+            handleAddThreadMember={handleAddThreadMember}
+            handleAppModals={handleAppModals}
+            threadMember={threadMember}
+            key="AddNewMemberModal"
+          />
+        )}
+
+        {(showNewTopicModal
+          || showAddNewModeratorModal
+          || showAddNewMemberModal
+        ) && <ModalBackground />}
+
+      </ReactCSSTransitionGroup>
+    );
+  }
+}
 
 export default AppModals;

@@ -18,7 +18,7 @@ const Topics = ({ topicList, handleAppModals, myProfile: { image }, myAddress, h
         {topicList && topicList.map(topic => <TopicOption topic={topic} handleViewTopic={handleViewTopic} />)}
       </ul>
     </div>
-    <button onClick={() => handleAppModals('NewTopicModal')}>
+    <button onClick={() => handleAppModals('NewTopicModal')} className="topics_newTopic">
       New Topic
     </button>
   </section>
