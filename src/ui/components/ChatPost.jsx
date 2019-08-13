@@ -9,36 +9,41 @@ import '../styles/index.scss';
 
 const ChatPost = (props) => {
   const {
+    deletePost,
     post: {
       author,
       message,
       postId,
       timestamp,
-      deletePost
-    }
+    },
+    myDid
   } = props;
-  const isMyPost = author === author;
+  const isMyPost = author === myDid;
 
   return (
     <div key={postId} className="dialogue_post">
       <div className="dialogue_post_content">
-        <ProfilePicture author={author} />
+        <div className="dialogue_post_content_profile">
+          <ProfilePicture did={author} />
+        </div>
         <p>{message}</p>
       </div>
-      <p>{timeSince(timestamp * 1000)}</p>
 
-      {isMyPost && (
-        <button
-          className="textButton"
-          onClick={() => deletePost(postId)}
-        >
-          <img
-            src={Delete}
-            alt="Delete"
-            className="dialogue_post_delete"
-          />
-        </button>
-      )}
+      <div className="dialogue_post_context">
+        {isMyPost && (
+          <button
+            className="textButton"
+            onClick={() => deletePost(postId)}
+          >
+            <img
+              src={Delete}
+              alt="Delete"
+              className="dialogue_post_delete"
+            />
+          </button>
+        )}
+        <p>{timeSince(timestamp * 1000)}</p>
+      </div>
     </div>
   )
 }

@@ -28,6 +28,7 @@ class Dialogue extends Component {
       postThread,
       myAddress,
       myProfile,
+      myDid,
       postMsg,
     } = this.props;
     const isMembersOnly = openTopics[topicTitle] && openTopics[topicTitle]._members;
@@ -43,7 +44,7 @@ class Dialogue extends Component {
 
         <div className="chatPage_dialogue_posts">
           {!!threadData.length && threadData.map(post => (
-            <ChatPost post={post} deletePost={this.deletePost} />
+            <ChatPost post={post} deletePost={this.deletePost} myDid={myDid} />
           ))}
         </div>
 
@@ -67,8 +68,8 @@ const PostEntry = (props) => (
   <div className="postEntry">
     <div className="postEntry_image">
       <ProfilePicture
-        profilePicture={props.myProfile.image}
-        address={props.myAddress}
+        myProfilePicture={props.myProfile.image}
+        myAddress={props.myAddress}
       />
     </div>
 

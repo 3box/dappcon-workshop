@@ -19,6 +19,9 @@ class AppModals extends Component {
       topicName,
       isMembersOnly,
       topicManager,
+      handleAppModals,
+      addToTopicList,
+      handleFormChange
     } = this.props;
 
     if (!topicName) {
@@ -31,10 +34,54 @@ class AppModals extends Component {
         this.setState({ newTopicError: err });
         return
       }
-      this.addToTopicList(topicName);
+      addToTopicList(topicName);
     });
-    this.handleAppModals('NewTopicModal');
+    handleFormChange(null, 'topicName');
+    handleAppModals('NewTopicModal');
   }
+
+  handleAddThreadMember = async () => { // interface value
+    const {
+      activeTopic,
+      threadMember,
+      updateThreadCapabilities,
+      handleFormChange,
+      updateThreadError,
+      handleAppModals
+    } = this.props;
+
+    try {
+      await activeTopic.addMember(threadMember);
+      updateThreadCapabilities();
+      handleFormChange(null, 'threadMember');
+      handleAppModals('AddNewMemberModal');
+    } catch (error) {
+      console.log('error', error);
+      updateThreadError(error);
+    }
+  }
+
+  handleAddThreadMod = async () => { // interface value
+    const {
+      activeTopic,
+      threadMod,
+      handleFormChange,
+      updateThreadCapabilities,
+      updateThreadError,
+      handleAppModals
+    } = this.props;
+
+    try {
+      await activeTopic.addModerator(threadMod);
+      console.log('after')
+      updateThreadCapabilities();
+      handleFormChange(null, 'threadMod');
+      handleAppModals('AddNewModeratorModal');
+    } catch (error) {
+      console.log('error', error);
+      updateThreadError(error);
+    }
+  };
 
   render() {
     const {
@@ -45,10 +92,8 @@ class AppModals extends Component {
       showAddNewMemberModal,
       topicName,
       handleFormChange,
-      handleAddThreadMod,
       threadMod,
       threadMember,
-      handleAddThreadMember
     } = this.props;
 
     return (
@@ -59,8 +104,8 @@ class AppModals extends Component {
       >
         {showNewTopicModal && (
           <NewTopicModal
-            handleAppModals={handleAppModals}
             handleCreateTopic={this.handleCreateTopic}
+            handleAppModals={handleAppModals}
             handleFormChange={handleFormChange}
             isMembersOnly={isMembersOnly}
             topicName={topicName}
@@ -70,9 +115,9 @@ class AppModals extends Component {
 
         {showAddNewModeratorModal && (
           <AddNewModeratorModal
+            handleAddThreadMod={this.handleAddThreadMod}
             handleFormChange={handleFormChange}
             handleAppModals={handleAppModals}
-            handleAddThreadMod={handleAddThreadMod}
             threadMod={threadMod}
             key="AddNewModeratorModal"
           />
@@ -80,8 +125,8 @@ class AppModals extends Component {
 
         {showAddNewMemberModal && (
           <AddNewMemberModal
+            handleAddThreadMember={this.handleAddThreadMember}
             handleFormChange={handleFormChange}
-            handleAddThreadMember={handleAddThreadMember}
             handleAppModals={handleAppModals}
             threadMember={threadMember}
             key="AddNewMemberModal"

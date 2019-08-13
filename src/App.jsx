@@ -19,6 +19,7 @@ class App extends Component {
       box: {},
       chanSpace: {},
       myAddress: '',
+      myDid: '',
       myProfile: {},
       isAppReady: false,
       topicList: [],
@@ -43,8 +44,9 @@ class App extends Component {
     const box = await Box.openBox(myAddress, window.ethereum, {});
     const myProfile = await Box.getProfile(myAddress);
     const chanSpace = await box.openSpace('3chan');
+    const myDid = chanSpace.DID;
 
-    this.setState({ chanSpace, box, myProfile, myAddress });
+    this.setState({ chanSpace, box, myProfile, myAddress, myDid });
     history.push('/chat');
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
   }
@@ -83,9 +85,10 @@ class App extends Component {
       topicManager,
       topicList,
       myProfile,
-      myAddress
+      myAddress,
+      myDid
     } = this.state;
-    console.log(this.state);
+
     return (
       <div className="App">
         {isAppReady && (<React.Fragment>
@@ -105,8 +108,10 @@ class App extends Component {
                   chanSpace={chanSpace}
                   myProfile={myProfile}
                   myAddress={myAddress}
+                  myDid={myDid}
                   topicList={topicList}
                   topicManager={topicManager}
+                  addToTopicList={this.addToTopicList}
                 />
               )}
             />

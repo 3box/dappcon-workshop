@@ -1,5 +1,6 @@
 import React from 'react';
 
+import BoxLogo from '../components/3BoxLogo';
 import Face from '../../assets/3BoxFace.svg';
 import '../styles/index.scss';
 
@@ -10,12 +11,14 @@ const Cover = ({ handleLogin }) => (
     </section>
     <section className="coverPage_ui">
       <div className="coverPage_ui_wrapper">
-        <h2>3CHAN</h2>
-        <p>Where topics come alive</p>
+        <div className="coverPage_ui_wrapper_logo">
+          <BoxLogo />
+        </div>
+        <p className="coverPage_ui_wrapper_line">Where topics come alive</p>
         <button onClick={handleLogin}>
           Get Started
         </button>
-        <p>powered by 3Box</p>
+        <p className="coverPage_ui_wrapper_tech">powered by 3Box</p>
       </div>
     </section>
   </div>

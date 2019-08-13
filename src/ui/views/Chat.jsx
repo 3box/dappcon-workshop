@@ -114,35 +114,9 @@ class Chat extends Component {
   }
 
   handleFormChange = (e, property) => {
-    this.setState({ [property]: e.target.value });
+    const value = e ? e.target.value : '';
+    this.setState({ [property]: value });
   }
-
-  handleAddThreadMember = async () => { // interface value
-    const { activeTopic, threadMember } = this.state;
-    try {
-      await activeTopic.addMember(threadMember);
-      this.updateThreadCapabilities();
-      this.setState({ threadMember: '' });
-    } catch (error) {
-      this.updateThreadError(error);
-    }
-  }
-
-  handleAddThreadMod = async () => { // interface value
-    const { activeTopic, threadMod } = this.state;
-    try {
-      await activeTopic.addModerator(threadMod);
-      this.updateThreadCapabilities();
-      this.setState({ threadMod: '' });
-    } catch (error) {
-      this.updateThreadError(error);
-    }
-  };
-
-  // syncComplete = (res) => {
-  //   console.log('Sync Complete')
-  //   this.updateProfileData(window.box)
-  // }
 
   render() {
     const {
@@ -165,9 +139,13 @@ class Chat extends Component {
     const {
       myAddress,
       myProfile,
+      myDid,
       topicList,
-      topicManager
+      topicManager,
+      addToTopicList
     } = this.props;
+
+    console.log('activeTopic', activeTopic);
 
     return (
       <React.Fragment>
@@ -181,11 +159,13 @@ class Chat extends Component {
           threadMod={threadMod}
           threadMember={threadMember}
           topicManager={topicManager}
+          addToTopicList={addToTopicList}
+          activeTopic={activeTopic}
 
           handleAppModals={this.handleAppModals}
           handleFormChange={this.handleFormChange}
-          handleAddThreadMod={this.handleAddThreadMod}
-          handleAddThreadMember={this.handleAddThreadMember}
+          updateThreadCapabilities={this.updateThreadCapabilities}
+          updateThreadError={this.updateThreadError}
         />
 
         <div className="chatPage">
@@ -195,6 +175,7 @@ class Chat extends Component {
             myProfile={myProfile}
             topicList={topicList}
             myAddress={myAddress}
+            topicTitle={topicTitle}
           />
 
           <Dialogue
@@ -205,12 +186,14 @@ class Chat extends Component {
             postMsg={postMsg}
             activeTopic={activeTopic}
             myAddress={myAddress}
+            myDid={myDid}
             handleFormChange={this.handleFormChange}
             postThread={this.postThread}
             updateThreadPosts={this.updateThreadPosts}
           />
 
           <Members
+            activeTopic={activeTopic}
             topicTitle={topicTitle}
             handleAppModals={this.handleAppModals}
             threadMemberList={threadMemberList}

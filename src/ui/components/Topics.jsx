@@ -4,35 +4,54 @@ import ProfilePicture from './ProfilePicture';
 import BoxLogo from './3BoxLogo';
 import '../styles/index.scss';
 
-const Topics = ({ topicList, handleAppModals, myProfile: { image }, myAddress, handleViewTopic }) => (
-  <section className="topics">
-    <div className="topics_nav">
-      <BoxLogo />
-      <ProfilePicture profilePicture={image} address={myAddress} />
-    </div>
-    <div className="topics_list">
-      <p className="topics_list_header">
-        TOPICS
+const Topics = (props) => {
+  const {
+    topicList,
+    handleAppModals,
+    myProfile: { image, name },
+    myAddress,
+    handleViewTopic,
+    topicTitle
+  } = props;
+
+  return (
+    <section className="topics">
+      <div className="topics_nav">
+        <BoxLogo />
+        <a href={`https://3box.io/${myAddress}`} target="_blank" rel="noopener noreferrer">
+          <ProfilePicture myProfilePicture={image} myAddress={myAddress} myName={name} />
+        </a>
+      </div>
+      <div className="topics_list">
+        <p className="topics_list_header">
+          TOPICS
       </p>
-      <ul>
-        {topicList && topicList.map(topic => <TopicOption topic={topic} handleViewTopic={handleViewTopic} />)}
-      </ul>
-    </div>
-    <button onClick={() => handleAppModals('NewTopicModal')} className="topics_newTopic">
-      New Topic
+        <ul>
+          {topicList && topicList.map(topic => (
+            <TopicOption
+              topic={topic}
+              handleViewTopic={handleViewTopic}
+              isCurrentTopic={topicTitle === topic}
+            />
+          ))}
+        </ul>
+      </div>
+      <button onClick={() => handleAppModals('NewTopicModal')} className="topics_newTopic">
+        New Topic
     </button>
-  </section>
-);
+    </section>
+  )
+};
 
 export default Topics;
 
-const TopicOption = ({ topic, handleViewTopic }) => (
+const TopicOption = ({ topic, handleViewTopic, isCurrentTopic }) => (
   <li>
     <button
       className="textButton"
       onClick={() => handleViewTopic(topic)}
     >
-      <h3>
+      <h3 className={`${isCurrentTopic ? 'isCurrentTopic' : ''}`}>
         {topic}
       </h3>
     </button>

@@ -5,6 +5,7 @@ $backgroundHue: rgb(247, 247, 247);
 $backgroundHueDark: rgb(208, 208, 208);
 $lighterFont: #747677;
 $lightestFont: #b1b1b1;
+$tileBottomMargin: 20px;
 
 ul,
 p,
@@ -23,7 +24,7 @@ button {
   color: white;
   height: 54px;
   cursor: pointer;
-
+  font-size: 14px;
   border-radius: 3px;
   padding: 14px 20px;
   transition: background-color .4s ease;
@@ -48,7 +49,85 @@ input {
   box-sizing: border-box;
 }
 
-.profilePicture {
+a:hover,
+a:visited,
+a:link,
+a:active {
+  text-decoration: none;
+}
+
+.logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+
+  img {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+  }
+
+  h3 {
+    color: $threeBoxBlack;
+    font-size: 40px;
+    margin-top: -2px;
+  }
+}
+
+.profileTile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  p {
+    margin-left: 8px;
+  }
+}
+
+.threeboxProfileHover__style_boxAddressWrap {
+  width: 100%;
+
+  div {
+    width: 100%;
+  }
+}
+
+.profileTile_info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.isCurrentTopic {
+  color: #F5A623;
+}
+
+.profileTile_creator {
+  color: #F5A623;
+  font-size: 13px;
+}
+
+.profileTile_moderator {
+  color: #F87CFF;
+  font-size: 13px;
+}
+
+.coverPage_ui_wrapper_logo {
+  margin-bottom: 8px;
+}
+
+.coverPage_ui_wrapper_line {
+  margin-bottom: 30px;
+  color: $lighterFont;
+}
+
+.coverPage_ui_wrapper_tech {
+  color: $lightestFont;
+}
+
+.profileTile_info_image {
   min-width: 40px;
   min-height: 40px;
   max-width: 40px;
@@ -82,30 +161,48 @@ input {
   justify-content: space-between;
   align-items: center;
 
-  section {
+  .coverPage_hero {
+    width: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    img {
+      width: 450px;
+      height: auto;
+    }
   }
 
-  .coverPage_hero {
-    width: 60%;
-  }
+}
 
-  .coverPage_ui {
-    width: 40%;
+.coverPage_ui {
+  width: 40%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  button {
+    margin-bottom: 18px;
   }
+}
+
+.coverPage_ui_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 4vw;
 }
 
 .dialogue_post {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  align-items: flex-start;
+  margin-bottom: $tileBottomMargin;
 }
 
 .dialogue_post_delete {
-  width: 24px;
+  width: 18px;
 }
 
 .dialogue_post_content {
@@ -114,7 +211,30 @@ input {
   align-items: flex-start;
 
   p {
-    padding: 10px 0 0 8px;
+    padding: 10px 0 0 10px;
+    text-align: left;
+  }
+}
+
+.dialogue_post_content_profile {
+  width: 40px;
+}
+
+.dialogue_post_context {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  margin-top: 10px;
+
+  p {
+    color: $lighterFont;
+    font-size: 12px;
+  }
+
+  button {
+    height: fit-content !important;
+    margin-right: 20px;
   }
 }
 
@@ -136,77 +256,78 @@ input {
   justify-content: space-between;
   align-items: center;
 
-  img {
-    width: 40%
-  }
-
   button {
     width: 100%;
     border-radius: 0;
   }
+}
 
-  .topics_newTopic {
-    height: 66px;
-  }
+.topics_newTopic {
+  height: 66px;
+}
 
-  .topics_nav {
+.topics_nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 64px;
+
+  a {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    width: 100%;
-    box-sizing: border-box;
-
-    a {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
-  }
-
-  .topics_list {
-    height: 80%;
-    width: 100%;
-    padding: 12px 0;
-    display: flex;
-    flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
-    box-sizing: border-box;
+    align-items: center;
+  }
+}
 
-    button {
-      // margin-bottom: 6px;
-      justify-content: flex-start;
+.topics_list {
+  height: calc(100% - 130px);
+  width: 100%;
+  height: 100%;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+
+  ul {
+    height: calc(100% - 18px);
+    overflow-y: scroll;
+  }
+
+  button {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  ul {
+    width: 100%;
+
+    li {
       width: 100%;
-    }
+      transition: all .2s ease-in-out;
+      padding-left: 20px;
+      box-sizing: border-box;
 
-    ul {
-      width: 100%;
-
-      li {
-        width: 100%;
-        transition: all .2s ease-in-out;
-        padding-left: 20px;
-        box-sizing: border-box;
-
-        &:hover {
-          background-color: $backgroundHueDark;
-        }
+      &:hover {
+        background-color: $backgroundHueDark;
       }
     }
   }
+}
 
-  .topics_list_header {
-    color: $lightestFont;
-    margin-bottom: 18px;
-    padding-left: 20px;
-  }
+.topics_list_header {
+  color: $lightestFont;
+  margin-bottom: 18px;
+  padding-left: 20px;
 }
 
 .chatPage_dialogue {
   width: 48%;
   height: 100vh;
-  // padding: 20px;
   box-sizing: border-box;
   overflow-y: scroll;
   position: relative;
@@ -220,6 +341,7 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  background-color: white;
 
   input {
     width: 80%;
@@ -241,13 +363,14 @@ input {
 
 .chatPage_dialogue_posts {
   padding: 12px 20px;
+  height: calc(100% - 150px);
+  overflow-y: scroll;
 }
 
 .chatPage_members {
   border-left: 1px solid rgb(242, 242, 242);
   width: 24%;
   height: 100%;
-  // padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -298,8 +421,29 @@ input {
   padding: 12px 20px;
 }
 
-.chatPage_members_members {
+.chatPage_members_list {
   padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-height: calc(100% - 216px);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.chatPage_members_list-add {
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.chatPage_members_list_tile {
+  margin-bottom: $tileBottomMargin;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .modal__container {

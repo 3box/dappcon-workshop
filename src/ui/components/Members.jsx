@@ -5,7 +5,15 @@ import CrossOut from '../../assets/CrossOut.svg';
 import '../styles/index.scss';
 
 const Members = (props) => {
-  const { handleAppModals, threadMemberList, threadModeratorList, topicTitle } = props;
+  const {
+    handleAppModals,
+    threadMemberList,
+    threadModeratorList,
+    topicTitle,
+    activeTopic,
+  } = props;
+
+  const { _firstModerator } = activeTopic;
 
   return (
     <section className="chatPage_members">
@@ -13,14 +21,32 @@ const Members = (props) => {
         MEMBERS
       </p>
 
-      <div className="chatPage_members_members">
-        {threadModeratorList && threadModeratorList.map(author => <ProfilePicture author={author} isModerator />)}
-        {threadMemberList && threadMemberList.map(author => <ProfilePicture author={author} />)}
+      <div className="chatPage_members_list">
+        {threadModeratorList && threadModeratorList.map(author => (
+          <div className="chatPage_members_list_tile">
+            <ProfilePicture
+              did={author}
+              isOwner={_firstModerator === author}
+              isModerator={_firstModerator !== author}
+              isTile
+              isUseHovers
+            />
+          </div>
+        ))}
+
+        {threadMemberList && threadMemberList.map(author => (
+          <div className="chatPage_members_list_tile">
+            <ProfilePicture
+              did={author}
+              isTile
+              isUseHovers
+            />
+          </div>
+        ))}
       </div>
 
       {topicTitle && (
-        <div className="chatPage_members_members">
-
+        <div className="chatPage_members_list-add">
           <button
             className="textButton"
             onClick={() => handleAppModals('AddNewModeratorModal')}

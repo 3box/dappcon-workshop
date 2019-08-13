@@ -1,3 +1,5 @@
+import resolve from 'did-resolver';
+
 export const timeSince = (date) => {
   if (!date) return '';
 
@@ -36,3 +38,8 @@ export const timeSince = (date) => {
 
   return `${h}:${m}${dd}`;
 };
+
+export const getAddrFromDid = async (did) => {
+  const doc = await resolve(did);
+  return doc.publicKey[2].ethereumAddress;
+}
