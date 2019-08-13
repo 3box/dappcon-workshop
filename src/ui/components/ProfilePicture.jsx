@@ -37,7 +37,7 @@ class ProfilePicture extends Component {
         ? `https://ipfs.infura.io/ipfs/${profilePicture[0].contentUrl['/']}`
         : blockie;
     } else if (isProfile) {
-      src = `https://ipfs.infura.io/ipfs/${profile.image[0].contentUrl['/']}`
+      src = Boolean(profile.image) ? `https://ipfs.infura.io/ipfs/${profile.image[0].contentUrl['/']}` : ""
     }
 
     console.log(src);
