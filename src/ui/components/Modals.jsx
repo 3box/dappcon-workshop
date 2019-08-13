@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import BoxLogo from './3BoxLogo';
 import CrossOut from '../../assets/CrossOut.svg';
 import '../styles/index.scss';
 

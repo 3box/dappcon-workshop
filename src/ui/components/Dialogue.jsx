@@ -12,6 +12,16 @@ class Dialogue extends Component {
     this.state = {}
   }
 
+  postThread = async () => {
+    const { activeTopic, postMsg, updateThreadError, handleFormChange } = this.props;
+    try {
+      await activeTopic.post(postMsg);
+      handleFormChange(null, 'postMsg')
+    } catch (error) {
+      updateThreadError(error);
+    }
+  }
+
   deletePost = (postId) => {
     const { activeTopic, updateThreadPosts } = this.props;
     activeTopic.deletePost(postId).then(res => {
@@ -25,7 +35,6 @@ class Dialogue extends Component {
       threadData,
       openTopics,
       handleFormChange,
-      postThread,
       myAddress,
       myProfile,
       myDid,
@@ -51,7 +60,7 @@ class Dialogue extends Component {
         {topicTitle && (
           <PostEntry
             handleFormChange={handleFormChange}
-            postThread={postThread}
+            postThread={this.postThread}
             myAddress={myAddress}
             myProfile={myProfile}
             postMsg={postMsg}

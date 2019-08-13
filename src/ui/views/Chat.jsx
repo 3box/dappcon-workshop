@@ -16,9 +16,8 @@ class Chat extends Component {
       threadModeratorList: [],
       threadData: [],
       topicTitle: '',
-      newTopicError: '',
-      threadACError: '',
-      topicError: '',
+      threadACError: '', // add
+      topicError: '', // add
       postMsg: '',
       topicName: '',
       threadMember: '',
@@ -40,22 +39,26 @@ class Chat extends Component {
     const { openTopics } = this.state;
     const { chanSpace, topicManager } = this.props;
 
-    this.setState({ topicTitle: topic });
+    // clean topic state
+    this.setState({
+      topicTitle: topic,
+      threadData: [],
+      threadMemberList: [],
+      threadModeratorList: [],
+    });
 
+    // if topic fetched before, use again
     if (openTopics[topic]) {
-      this.setState({ activeTopic: openTopics[topic] });
-      this.updateThreadPosts()
-      this.updateThreadCapabilities()
+      this.setState({ activeTopic: openTopics[topic] }, () => {
+        this.updateThreadPosts();
+        this.updateThreadCapabilities();
+      });
       return
     }
 
+    // fetch topic data
     topicManager.getOwner(topic, (err, owner) => {
       topicManager.getMembers(topic, async (err, members) => {
-        if (!chanSpace) {
-          this.setState({ topicError: 'Not fully logged in, try again in a moment' });
-          return
-        }
-
         const thread = await chanSpace.joinThread(topic, { firstModerator: owner, members });
         openTopics[topic] = thread;
         this.setState({ activeTopic: openTopics[topic] });
@@ -86,6 +89,8 @@ class Chat extends Component {
 
   updateThreadCapabilities = async () => {
     const { activeTopic } = this.state;
+
+    // add thread members to state
     let threadMemberList = [];
     if (activeTopic._members) {
       const members = await activeTopic.listMembers();
@@ -93,29 +98,20 @@ class Chat extends Component {
     };
     this.setState({ threadMemberList });
 
+    // add thread mods to state
     let threadModeratorList = [];
     const moderators = await activeTopic.listModerators();
     moderators.map(moderator => threadModeratorList.push(moderator));
     this.setState({ threadModeratorList });
   }
 
-  updateThreadError = (e = '') => {
-    this.setState({ threadACError: e });
-  }
-
-  postThread = async () => {
-    const { activeTopic, postMsg } = this.state;
-    try {
-      await activeTopic.post(postMsg);
-      this.setState({ postMsg: '' });
-    } catch (error) {
-      this.updateThreadError(error);
-    }
-  }
-
-  handleFormChange = (e, property) => {
+  handleFormChange = (e, property) => { // for inputs in app modals
     const value = e ? e.target.value : '';
     this.setState({ [property]: value });
+  }
+
+  updateThreadError = (e = '') => {
+    this.setState({ threadACError: e });
   }
 
   render() {
@@ -144,8 +140,6 @@ class Chat extends Component {
       topicManager,
       addToTopicList
     } = this.props;
-
-    console.log('activeTopic', activeTopic);
 
     return (
       <React.Fragment>
@@ -188,8 +182,8 @@ class Chat extends Component {
             myAddress={myAddress}
             myDid={myDid}
             handleFormChange={this.handleFormChange}
-            postThread={this.postThread}
             updateThreadPosts={this.updateThreadPosts}
+            updateThreadError={this.updateThreadError}
           />
 
           <Members

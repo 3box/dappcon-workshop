@@ -22,10 +22,11 @@ const Topics = (props) => {
           <ProfilePicture myProfilePicture={image} myAddress={myAddress} myName={name} />
         </a>
       </div>
+
       <div className="topics_list">
         <p className="topics_list_header">
           TOPICS
-      </p>
+        </p>
         <ul>
           {topicList && topicList.map(topic => (
             <TopicOption
@@ -36,9 +37,13 @@ const Topics = (props) => {
           ))}
         </ul>
       </div>
-      <button onClick={() => handleAppModals('NewTopicModal')} className="topics_newTopic">
-        New Topic
-    </button>
+
+      <button
+        onClick={() => handleAppModals('NewTopicModal')}
+        className="topics_newTopic"
+      >
+        Create Topic
+      </button>
     </section>
   )
 };
@@ -56,4 +61,4 @@ const TopicOption = ({ topic, handleViewTopic, isCurrentTopic }) => (
       </h3>
     </button>
   </li>
-)
+);

@@ -34,6 +34,7 @@ button {
   align-items: center;
   letter-spacing: .77px;
   box-sizing: border-box;
+  font-weight: 900 !important;
 
   &:hover {
     background-color: $threeBoxBlackHover;
@@ -280,6 +281,14 @@ a:active {
     justify-content: flex-start;
     align-items: center;
   }
+
+  h3 {
+    font-size: 28px;
+  }
+
+  img {
+    width: 34px;
+  }
 }
 
 .topics_list {
@@ -301,6 +310,7 @@ a:active {
   button {
     justify-content: flex-start;
     width: 100%;
+    padding-left: 20px;
   }
 
   ul {
@@ -309,7 +319,6 @@ a:active {
     li {
       width: 100%;
       transition: all .2s ease-in-out;
-      padding-left: 20px;
       box-sizing: border-box;
 
       &:hover {
@@ -368,6 +377,7 @@ a:active {
 }
 
 .chatPage_members {
+  background-color: $backgroundHue;
   border-left: 1px solid rgb(242, 242, 242);
   width: 24%;
   height: 100%;
@@ -382,7 +392,6 @@ a:active {
     justify-content: center;
     align-items: center;
     color: $lightestFont;
-    font-weight: 900;
 
     &:hover {
       color: $threeBoxBlack;

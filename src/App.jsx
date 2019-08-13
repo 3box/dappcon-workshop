@@ -29,7 +29,9 @@ class App extends Component {
 
   componentDidMount() {
     const { box } = this.state;
-    const { history } = this.props
+    const { history } = this.props;
+
+    // if you haven't openedBox, return to login
     if (!box.public) history.push('/');
     this.setState({ isAppReady: true });
   }
@@ -39,36 +41,21 @@ class App extends Component {
     const addresses = await window.ethereum.enable();
     const myAddress = addresses[0];
 
-    this.updateTopics();
+    // fetch initial topics
+    this.getChatContractAndTopics();
 
+    // get my box and profile
     const box = await Box.openBox(myAddress, window.ethereum, {});
     const myProfile = await Box.getProfile(myAddress);
+
+    // open 3chat space
     const chanSpace = await box.openSpace('3chan');
     const myDid = chanSpace.DID;
 
+    // set all to state and continue
     this.setState({ chanSpace, box, myProfile, myAddress, myDid });
     history.push('/chat');
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
-  }
-
-  updateTopics = () => {
-    const { topicManager } = this.state;
-
-    let newTopicManager;
-    if (!topicManager.topics) {
-      newTopicManager = web3.eth.contract(TopicManagerABI).at('0x7f2210557974dD74A660CcC8e2D4233528fb54A4'); // eslint-disable-line
-    } else {
-      newTopicManager = topicManager;
-    }
-
-    const getTopics = (i, err, topic) => {
-      if (err) return
-      if (topic) this.addToTopicList(topic)
-      newTopicManager.topics(i, getTopics.bind(getTopics, ++i));
-      this.setState({ topicManager: newTopicManager });
-    }
-
-    getTopics(0);
   }
 
   addToTopicList = (topic) => {
@@ -76,6 +63,21 @@ class App extends Component {
     const updatedTopicList = topicList.slice();
     updatedTopicList.push(topic);
     this.setState({ topicList: updatedTopicList });
+  }
+
+  getChatContractAndTopics = () => { // this was changed, ask oed
+    const topicManager = web3.eth  // eslint-disable-line
+      .contract(TopicManagerABI).at('0x7f2210557974dD74A660CcC8e2D4233528fb54A4');
+
+    // get chat topics // can we remove?
+    const getTopics = (i, err, topic) => {
+      if (err) return
+      if (topic) this.addToTopicList(topic)
+      topicManager.topics(i, getTopics.bind(getTopics, ++i));
+      this.setState({ topicManager });
+    }
+
+    getTopics(0);
   }
 
   render() {

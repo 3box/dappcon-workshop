@@ -6,7 +6,6 @@ import ProfilePicture from './ProfilePicture';
 import Delete from '../../assets/Delete.png'
 import '../styles/index.scss';
 
-
 const ChatPost = (props) => {
   const {
     deletePost,
