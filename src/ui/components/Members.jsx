@@ -23,7 +23,7 @@ const Members = (props) => {
 
       <div className="chatPage_members_list">
         {threadModeratorList && threadModeratorList.map(author => (
-          <div className="chatPage_members_list_tile">
+          <div className="chatPage_members_list_tile" key={author}>
             <ProfilePicture
               did={author}
               isOwner={_firstModerator === author}
@@ -35,7 +35,7 @@ const Members = (props) => {
         ))}
 
         {threadMemberList && threadMemberList.map(author => (
-          <div className="chatPage_members_list_tile">
+          <div className="chatPage_members_list_tile" key={author}>
             <ProfilePicture
               did={author}
               isTile

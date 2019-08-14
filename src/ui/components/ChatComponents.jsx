@@ -3,10 +3,11 @@ import React from 'react';
 import { timeSince } from '../../utils/helpers';
 
 import ProfilePicture from './ProfilePicture';
+import SendIcon from '../../assets/Send.svg';
 import Delete from '../../assets/Delete.png'
 import '../styles/index.scss';
 
-const ChatPost = (props) => {
+export const ChatPost = (props) => {
   const {
     deletePost,
     post: {
@@ -47,4 +48,28 @@ const ChatPost = (props) => {
   )
 }
 
-export default ChatPost;
+export const ChatInput = (props) => (
+  <div className="postEntry">
+    <div className="postEntry_image">
+      <ProfilePicture
+        myProfilePicture={props.myProfile.image}
+        myAddress={props.myAddress}
+      />
+    </div>
+
+    <input
+      name="website"
+      type="text"
+      className="edit__profile__value"
+      value={props.postMsg}
+      placeholder="Type your message here..."
+      onChange={e => props.handleFormChange(e, 'postMsg')}
+    />
+
+    <div className="postEntry_image">
+      <button onClick={props.postThread} className="textButton">
+        <img src={SendIcon} alt="Send" />
+      </button>
+    </div>
+  </div>
+)

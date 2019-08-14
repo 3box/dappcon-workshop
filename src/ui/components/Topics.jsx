@@ -8,10 +8,10 @@ const Topics = (props) => {
   const {
     topicList,
     handleAppModals,
-    myProfile: { image, name },
     myAddress,
     handleViewTopic,
-    topicTitle
+    topicTitle,
+    myProfile: { image, name },
   } = props;
 
   return (
@@ -33,6 +33,7 @@ const Topics = (props) => {
               topic={topic}
               handleViewTopic={handleViewTopic}
               isCurrentTopic={topicTitle === topic}
+              key={topic}
             />
           ))}
         </ul>

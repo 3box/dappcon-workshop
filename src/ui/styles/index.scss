@@ -512,6 +512,7 @@ a:active {
 }
 
 .modal_form {
+  position: relative;
   padding: 60px 50px 30px 50px;
   width: 100%;
   box-sizing: border-box;
@@ -519,6 +520,13 @@ a:active {
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
+}
+
+.modal_form_error {
+  position: absolute;
+  bottom: 4px;
+  color: red;
+  font-size: 12px !important;
 }
 
 .modal_options {

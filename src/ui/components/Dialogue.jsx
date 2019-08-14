@@ -1,9 +1,7 @@
 
 import React, { Component } from 'react';
 
-import ChatPost from './ChatPost';
-import ProfilePicture from './ProfilePicture';
-import SendIcon from '../../assets/Send.svg';
+import { ChatPost, ChatInput } from './ChatComponents';
 import '../styles/index.scss';
 
 class Dialogue extends Component {
@@ -12,21 +10,26 @@ class Dialogue extends Component {
     this.state = {}
   }
 
+  // create thread post from chat input
   postThread = async () => {
     const { activeTopic, postMsg, updateThreadError, handleFormChange } = this.props;
     try {
       await activeTopic.post(postMsg);
-      handleFormChange(null, 'postMsg')
+      handleFormChange(null, 'postMsg');
     } catch (error) {
       updateThreadError(error);
     }
   }
 
-  deletePost = (postId) => {
-    const { activeTopic, updateThreadPosts } = this.props;
-    activeTopic.deletePost(postId).then(res => {
-      updateThreadPosts()
-    }).catch(this.updateThreadError);
+  // delete your own post from a thread
+  deletePost = async (postId) => {
+    const { activeTopic, updateThreadPosts, updateThreadError } = this.props;
+    try {
+      await activeTopic.deletePost(postId);
+      updateThreadPosts();
+    } catch (error) {
+      updateThreadError(error);
+    }
   }
 
   render() {
@@ -53,14 +56,19 @@ class Dialogue extends Component {
 
         <div className="chatPage_dialogue_posts">
           {!!threadData.length && threadData.map(post => (
-            <ChatPost post={post} deletePost={this.deletePost} myDid={myDid} />
+            <ChatPost
+              deletePost={this.deletePost}
+              post={post}
+              myDid={myDid}
+              key={post.postId}
+            />
           ))}
         </div>
 
         {topicTitle && (
-          <PostEntry
-            handleFormChange={handleFormChange}
+          <ChatInput
             postThread={this.postThread}
+            handleFormChange={handleFormChange}
             myAddress={myAddress}
             myProfile={myProfile}
             postMsg={postMsg}
@@ -72,29 +80,3 @@ class Dialogue extends Component {
 }
 
 export default Dialogue;
-
-const PostEntry = (props) => (
-  <div className="postEntry">
-    <div className="postEntry_image">
-      <ProfilePicture
-        myProfilePicture={props.myProfile.image}
-        myAddress={props.myAddress}
-      />
-    </div>
-
-    <input
-      name="website"
-      type="text"
-      className="edit__profile__value"
-      value={props.postMsg}
-      placeholder="Type your message here..."
-      onChange={e => props.handleFormChange(e, 'postMsg')}
-    />
-
-    <div className="postEntry_image">
-      <button onClick={props.postThread} className="textButton">
-        <img src={SendIcon} alt="Send" />
-      </button>
-    </div>
-  </div>
-)

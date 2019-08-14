@@ -16,8 +16,7 @@ class Chat extends Component {
       threadModeratorList: [],
       threadData: [],
       topicTitle: '',
-      threadACError: '', // add
-      topicError: '', // add
+      threadACError: '',
       postMsg: '',
       topicName: '',
       threadMember: '',
@@ -63,13 +62,8 @@ class Chat extends Component {
         openTopics[topic] = thread;
         this.setState({ activeTopic: openTopics[topic] });
 
-        thread.onUpdate(() => {
-          this.updateThreadPosts();
-        });
-
-        thread.onNewCapabilities(() => {
-          this.updateThreadCapabilities();
-        });
+        thread.onUpdate(() => this.updateThreadPosts());
+        thread.onNewCapabilities(() => this.updateThreadCapabilities());
 
         this.updateThreadPosts();
         this.updateThreadCapabilities();
@@ -79,7 +73,7 @@ class Chat extends Component {
 
   updateThreadPosts = async () => {
     const { activeTopic } = this.state;
-    this.updateThreadError();
+    // this.updateThreadError(); why is this here?
 
     let threadData = [];
     const posts = await activeTopic.getPosts();
@@ -111,6 +105,7 @@ class Chat extends Component {
   }
 
   updateThreadError = (e = '') => {
+    console.log('error', e);
     this.setState({ threadACError: e });
   }
 
@@ -129,7 +124,8 @@ class Chat extends Component {
       threadMod,
       threadMember,
       threadModeratorList,
-      activeTopic
+      activeTopic,
+      threadACError
     } = this.state;
 
     const {
@@ -144,10 +140,13 @@ class Chat extends Component {
     return (
       <React.Fragment>
         <AppModals
+          handleAppModals={this.handleAppModals}
+          handleFormChange={this.handleFormChange}
+          updateThreadCapabilities={this.updateThreadCapabilities}
+          updateThreadError={this.updateThreadError}
           showNewTopicModal={showNewTopicModal}
           showAddNewModeratorModal={showAddNewModeratorModal}
           showAddNewMemberModal={showAddNewMemberModal}
-
           isMembersOnly={isMembersOnly}
           topicName={topicName}
           threadMod={threadMod}
@@ -155,11 +154,7 @@ class Chat extends Component {
           topicManager={topicManager}
           addToTopicList={addToTopicList}
           activeTopic={activeTopic}
-
-          handleAppModals={this.handleAppModals}
-          handleFormChange={this.handleFormChange}
-          updateThreadCapabilities={this.updateThreadCapabilities}
-          updateThreadError={this.updateThreadError}
+          threadACError={threadACError}
         />
 
         <div className="chatPage">
@@ -173,6 +168,9 @@ class Chat extends Component {
           />
 
           <Dialogue
+            handleFormChange={this.handleFormChange}
+            updateThreadPosts={this.updateThreadPosts}
+            updateThreadError={this.updateThreadError}
             topicTitle={topicTitle}
             threadData={threadData}
             openTopics={openTopics}
@@ -181,15 +179,12 @@ class Chat extends Component {
             activeTopic={activeTopic}
             myAddress={myAddress}
             myDid={myDid}
-            handleFormChange={this.handleFormChange}
-            updateThreadPosts={this.updateThreadPosts}
-            updateThreadError={this.updateThreadError}
           />
 
           <Members
+            handleAppModals={this.handleAppModals}
             activeTopic={activeTopic}
             topicTitle={topicTitle}
-            handleAppModals={this.handleAppModals}
             threadMemberList={threadMemberList}
             threadModeratorList={threadModeratorList}
           />

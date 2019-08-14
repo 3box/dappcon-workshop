@@ -26,11 +26,6 @@ class AppModals extends Component {
       handleFormChange
     } = this.props;
 
-    if (!topicName) {
-      this.setState({ newTopicError: 'No topic name set!' });
-      return;
-    }
-
     topicManager.claimTopic(topicName, isMembersOnly, (err, res) => {
       if (err) {
         this.setState({ newTopicError: err });
@@ -38,6 +33,7 @@ class AppModals extends Component {
       }
       addToTopicList(topicName);
     });
+
     handleFormChange(null, 'topicName');
     handleAppModals('NewTopicModal');
   }
@@ -58,7 +54,6 @@ class AppModals extends Component {
       handleFormChange(null, 'threadMember');
       handleAppModals('AddNewMemberModal');
     } catch (error) {
-      console.log('error', error);
       updateThreadError(error);
     }
   }
@@ -75,17 +70,16 @@ class AppModals extends Component {
 
     try {
       await activeTopic.addModerator(threadMod);
-      console.log('after')
       updateThreadCapabilities();
       handleFormChange(null, 'threadMod');
       handleAppModals('AddNewModeratorModal');
     } catch (error) {
-      console.log('error', error);
       updateThreadError(error);
     }
   };
 
   render() {
+    const { newTopicError } = this.state;
     const {
       showNewTopicModal,
       handleAppModals,
@@ -96,6 +90,7 @@ class AppModals extends Component {
       handleFormChange,
       threadMod,
       threadMember,
+      threadACError,
     } = this.props;
 
     return (
@@ -111,6 +106,7 @@ class AppModals extends Component {
             handleFormChange={handleFormChange}
             isMembersOnly={isMembersOnly}
             topicName={topicName}
+            newTopicError={newTopicError}
             key="NewTopicModal"
           />
         )}
@@ -121,6 +117,7 @@ class AppModals extends Component {
             handleFormChange={handleFormChange}
             handleAppModals={handleAppModals}
             threadMod={threadMod}
+            threadACError={threadACError}
             key="AddNewModeratorModal"
           />
         )}
@@ -131,6 +128,7 @@ class AppModals extends Component {
             handleFormChange={handleFormChange}
             handleAppModals={handleAppModals}
             threadMember={threadMember}
+            threadACError={threadACError}
             key="AddNewMemberModal"
           />
         )}

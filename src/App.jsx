@@ -58,6 +58,7 @@ class App extends Component {
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
   }
 
+  // add topic to ui list
   addToTopicList = (topic) => {
     const { topicList } = this.state;
     const updatedTopicList = topicList.slice();
@@ -65,11 +66,12 @@ class App extends Component {
     this.setState({ topicList: updatedTopicList });
   }
 
+
   getChatContractAndTopics = () => { // this was changed, ask oed
     const topicManager = web3.eth  // eslint-disable-line
       .contract(TopicManagerABI).at('0x7f2210557974dD74A660CcC8e2D4233528fb54A4');
 
-    // get chat topics // can we remove?
+    // get chat topics
     const getTopics = (i, err, topic) => {
       if (err) return
       if (topic) this.addToTopicList(topic)

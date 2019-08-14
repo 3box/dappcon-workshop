@@ -8,10 +8,10 @@ export const ModalBackground = () => <div className="modal_overlay" />;
 export const NewTopicModal = (props) => {
   const {
     handleAppModals,
-    isMembersOnly,
     handleCreateTopic,
     topicName,
-    handleFormChange
+    handleFormChange,
+    newTopicError,
   } = props;
 
   return (
@@ -33,6 +33,7 @@ export const NewTopicModal = (props) => {
             value={topicName}
             onChange={e => handleFormChange(e, 'topicName')}
           />
+          {newTopicError && <p className="modal_form_error">{newTopicError}</p>}
         </div>
 
         <div className="modal_options">
@@ -47,7 +48,6 @@ export const NewTopicModal = (props) => {
               <input
                 type="radio"
                 name="members"
-                // checked={!isMembersOnly}
                 defaultChecked
                 value={false}
                 onChange={e => handleFormChange(e, 'isMembersOnly')}
@@ -59,12 +59,10 @@ export const NewTopicModal = (props) => {
               <label for="topicClosed">
                 Members
               </label>
-              {console.log('isMembersOnly', isMembersOnly)}
               <input
                 type="radio"
                 name="members"
                 value={true}
-                // checked={isMembersOnly}
                 onChange={e => handleFormChange(e, 'isMembersOnly')}
                 id="isMembersOnly"
               />
@@ -72,9 +70,8 @@ export const NewTopicModal = (props) => {
           </div>
         </div>
 
-        <button
-          onClick={handleCreateTopic}
-        >
+        {console.log('!topicName', !topicName)}
+        <button onClick={handleCreateTopic} disabled={!topicName}>
           CREATE
         </button>
       </div>
@@ -87,7 +84,8 @@ export const AddNewModeratorModal = (props) => {
     handleAppModals,
     handleAddThreadMod,
     handleFormChange,
-    threadMod
+    threadMod,
+    threadACError,
   } = props;
 
   return (
@@ -109,6 +107,7 @@ export const AddNewModeratorModal = (props) => {
             value={threadMod}
             onChange={e => handleFormChange(e, 'threadMod')}
           />
+          {threadACError && <p className="modal_form_error">{threadACError}</p>}
         </div>
 
         <button onClick={handleAddThreadMod}>
@@ -124,7 +123,8 @@ export const AddNewMemberModal = (props) => {
     handleAppModals,
     handleAddThreadMember,
     threadMember,
-    handleFormChange
+    handleFormChange,
+    threadACError,
   } = props;
 
   return (
@@ -146,6 +146,7 @@ export const AddNewMemberModal = (props) => {
             value={threadMember}
             onChange={e => handleFormChange(e, 'threadMember')}
           />
+          {threadACError && <p className="modal_form_error">{threadACError}</p>}
         </div>
 
         <button onClick={handleAddThreadMember}>
