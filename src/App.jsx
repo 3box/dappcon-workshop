@@ -48,6 +48,7 @@ class App extends Component {
     const box = await Box.openBox(myAddress, window.ethereum, {});
     const myProfile = await Box.getProfile(myAddress);
 
+    await new Promise((resolve, reject) => box.onSyncDone(resolve));
     // open 3chat space
     const chatSpace = await box.openSpace('3chat');
     const myDid = chatSpace.DID;
@@ -55,7 +56,6 @@ class App extends Component {
     // set all to state and continue
     this.setState({ chatSpace, box, myProfile, myAddress, myDid });
     history.push('/chat');
-    await new Promise((resolve, reject) => box.onSyncDone(resolve));
   }
 
   // add topic to ui list
