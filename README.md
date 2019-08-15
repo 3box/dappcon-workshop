@@ -1,4 +1,4 @@
-# 3Chat: Building a discussion app with 3Box threads
+# 3Chat: A discussion app built with 3Box threads
 This demo application will be used by participants of the dappcon workshop in Berlin to learn how to build with 3Box threads, but we will also make the app available at 3chat.3box.io (coming soon) once it's ready.
 
 
