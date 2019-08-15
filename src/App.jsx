@@ -17,7 +17,7 @@ class App extends Component {
     super(props);
     this.state = {
       box: {},
-      chanSpace: {},
+      chatSpace: {},
       myAddress: '',
       myDid: '',
       myProfile: {},
@@ -49,11 +49,11 @@ class App extends Component {
     const myProfile = await Box.getProfile(myAddress);
 
     // open 3chat space
-    const chanSpace = await box.openSpace('3chan');
-    const myDid = chanSpace.DID;
+    const chatSpace = await box.openSpace('3chat');
+    const myDid = chatSpace.DID;
 
     // set all to state and continue
-    this.setState({ chanSpace, box, myProfile, myAddress, myDid });
+    this.setState({ chatSpace, box, myProfile, myAddress, myDid });
     history.push('/chat');
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
   }
@@ -69,7 +69,7 @@ class App extends Component {
 
   getChatContractAndTopics = () => { // this was changed, ask oed
     const topicManager = web3.eth  // eslint-disable-line
-      .contract(TopicManagerABI).at('0x7f2210557974dD74A660CcC8e2D4233528fb54A4');
+      .contract(TopicManagerABI).at('0x3895697Ad108a9a9cFaB326808194A6b41479cbD');
 
     // get chat topics
     const getTopics = (i, err, topic) => {
@@ -85,7 +85,7 @@ class App extends Component {
   render() {
     const {
       isAppReady,
-      chanSpace,
+      chatSpace,
       topicManager,
       topicList,
       myProfile,
@@ -109,7 +109,7 @@ class App extends Component {
               path='/chat'
               render={() => (
                 <Chat
-                  chanSpace={chanSpace}
+                  chatSpace={chatSpace}
                   myProfile={myProfile}
                   myAddress={myAddress}
                   myDid={myDid}

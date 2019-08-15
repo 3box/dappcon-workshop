@@ -36,7 +36,7 @@ class Chat extends Component {
 
   handleViewTopic = (topic) => {
     const { openTopics } = this.state;
-    const { chanSpace, topicManager } = this.props;
+    const { chatSpace, topicManager } = this.props;
 
     // clean topic state
     this.setState({
@@ -58,7 +58,7 @@ class Chat extends Component {
     // fetch topic data
     topicManager.getOwner(topic, (err, owner) => {
       topicManager.getMembers(topic, async (err, members) => {
-        const thread = await chanSpace.joinThread(topic, { firstModerator: owner, members });
+        const thread = await chatSpace.joinThread(topic, { firstModerator: owner, members });
         openTopics[topic] = thread;
         this.setState({ activeTopic: openTopics[topic] });
 
