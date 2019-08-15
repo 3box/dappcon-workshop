@@ -42,8 +42,10 @@ class Dialogue extends Component {
       myProfile,
       myDid,
       postMsg,
+      activeTopic
     } = this.props;
     const isMembersOnly = openTopics[topicTitle] && openTopics[topicTitle]._members;
+    const isModerator = activeTopic._firstModerator === myDid;
 
     return (
       <section className="chatPage_dialogue">
@@ -60,6 +62,7 @@ class Dialogue extends Component {
               deletePost={this.deletePost}
               post={post}
               myDid={myDid}
+              isModerator={isModerator}
               key={post.postId}
             />
           ))}

@@ -16,7 +16,8 @@ export const ChatPost = (props) => {
       postId,
       timestamp,
     },
-    myDid
+    myDid,
+    isModerator
   } = props;
   const isMyPost = author === myDid;
 
@@ -30,7 +31,7 @@ export const ChatPost = (props) => {
       </div>
 
       <div className="dialogue_post_context">
-        {isMyPost && (
+        {(isMyPost || isModerator) && (
           <button
             className="textButton"
             onClick={() => deletePost(postId)}

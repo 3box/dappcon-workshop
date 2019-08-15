@@ -73,7 +73,7 @@ class Chat extends Component {
 
   updateThreadPosts = async () => {
     const { activeTopic } = this.state;
-    // this.updateThreadError(); why is this here?
+    this.updateThreadError();
 
     let threadData = [];
     const posts = await activeTopic.getPosts();

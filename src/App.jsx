@@ -47,8 +47,8 @@ class App extends Component {
     // get my box and profile
     const box = await Box.openBox(myAddress, window.ethereum, {});
     const myProfile = await Box.getProfile(myAddress);
-
     await new Promise((resolve, reject) => box.onSyncDone(resolve));
+
     // open 3chat space
     const chatSpace = await box.openSpace('3chat');
     const myDid = chatSpace.DID;
@@ -67,7 +67,7 @@ class App extends Component {
   }
 
 
-  getChatContractAndTopics = () => { // this was changed, ask oed
+  getChatContractAndTopics = () => {
     const topicManager = web3.eth  // eslint-disable-line
       .contract(TopicManagerABI).at('0x3895697Ad108a9a9cFaB326808194A6b41479cbD');
 

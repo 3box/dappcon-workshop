@@ -60,6 +60,7 @@ class ProfilePicture extends Component {
                 profileName={profileName}
                 isModerator={isModerator}
                 isOwner={isOwner}
+                address={ethAddr}
               />
             </ProfileHover>
           ) : (
@@ -69,6 +70,7 @@ class ProfilePicture extends Component {
                 profileName={profileName}
                 isModerator={isModerator}
                 isOwner={isOwner}
+                address={ethAddr}
               />
             )
         }
@@ -79,19 +81,22 @@ class ProfilePicture extends Component {
 
 export default ProfilePicture;
 
-const ProfileTile = ({ image, isTile, profileName, isModerator, isOwner }) => (
+const ProfileTile = ({ image, isTile, profileName, isModerator, isOwner, address }) => (
   <div className="profileTile">
     <div className="profileTile_info">
-      {image ? (
-        <img
-          src={image}
-          className="profileTile_info_image"
-          alt="profile"
-        />
-      ) : <div className="profileTile_info_image" />}
-      {isTile && (
-        <p>{profileName}</p>
-      )}
+      <a href={`https://3box.io/${address}`} className="profileTile_info_link">
+        {image ? (
+          <img
+            src={image}
+            className="profileTile_info_image profileTile_info_image-transparent"
+            alt="profile"
+          />
+        ) : <div className="profileTile_info_image" />}
+
+        {isTile && (
+          <p>{profileName}</p>
+        )}
+      </a>
     </div>
 
     {isOwner && <p className="profileTile_creator">Creator</p>}
