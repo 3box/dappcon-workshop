@@ -1,6 +1,5 @@
 # 3Chat: A discussion app built with 3Box threads
-This demo application will be used by participants of the dappcon workshop in Berlin to learn how to build with 3Box threads, but we will also make the app available at 3chat.3box.io (coming soon) once it's ready.
-
+This is a demo application created for a workshop at dappcon 2019. If you follow along you will learn how to build a dapp with 3Box threads.
 
 
 
@@ -8,7 +7,7 @@ This demo application will be used by participants of the dappcon workshop in Be
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Running the application
 
 In the project directory, you can run:
 
@@ -20,57 +19,84 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Workshop steps
+This app contains logic for a threaded conversation app. The only thing that is missing is implementing the 3Box functionality. Below the steps needed in order to make the app fully functional are described.
+During the workshop https://docs.3box.io is your friend!
 
-### `npm run build`
+### Step 1: Basic get profile of current user
+Open the file `src/App.jsx` import 3Box and call getProfile in the correct locations.
+```js
+import Box from '3box'
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const myProfile = await Box.getProfile(myAddress);
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Step 2: Authenticate user
+In the `handleLogin` function we can no add the code needed to authenticate the user to the `3chat` space.
+```js
+box = await Box.openBox(myAddress, window.ethereum, {})
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+await new Promise((resolve, reject) => box.onSyncDone(resolve))
 
-### `npm run eject`
+const chatSpace = await box.openSpace('3chat');
+const myDid = chatSpace.DID;
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Step 3: Display posts in topic
+When a user clicks on a topic name in the left side of the panel we want to display the posts of that topic. Open the `src/ui/views/Chat.jsx` file and add the following at the appropriate location in the `handleViewTopic` function.
+```js
+const thread = await chatSpace.joinThread(topic, { firstModerator: owner, members });
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+thread.onUpdate(() => this.updateThreadPosts());
+thread.onNewCapabilities(() => this.updateThreadCapabilities());
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To actually display the posts we need to edit the `updateThreadPosts` function with a call to `getPosts`.
+```js
+const posts = await activeTopic.getPosts();
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Step 4: Display members and moderators
+To display the moderators and members of a topic we need to modify the `updateThreadCapabilities` function by adding the two following calls:
+```js
+const members = await activeTopic.listMembers();
 
-## Learn More
+const moderators = await activeTopic.listModerators();
+```
+Note that the members call has to be surronded with a try/catch
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Step 5: Get profile of authors, moderators, and members
+Repeat Step 1 but in the `src/ui/components/ProfilePicture.jsx` file. Use `this.props.did` instead of `myAddress` in the `getProfile` call.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Next we add profile hovers to the members list, first import the library.
+```js
+import ProfileHover from 'profile-hover';
+```
+Now we just wrap the `profileTile` with the following tag:
+```js
+<ProfileHover noTheme address={ethAddr} orientation="left">
+  <!--content-->
+</ProfileHover>
+```
 
-### Code Splitting
+### Step 6: Add members and mods
+To add the ability to add new moderators and members open the `src/ui/views/AppModals.jsx` file.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+In the `handleAddThreadMember` function add the following call.
+```js
+await activeTopic.addMember(threadMember);
+```
 
-### Analyzing the Bundle Size
+In the `handleAddThreadMod` function add the following call.
+```js
+await activeTopic.addModerator(threadMod);
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### Step 7: Make posts
+To add the ability to make posts open the `src/ui/components/Dialogue.jsx` file.
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+In the `postThread` function add the following call.
+```js
+await activeTopic.post(postMsg);
+```

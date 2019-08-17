@@ -14,7 +14,7 @@ class Dialogue extends Component {
   postThread = async () => {
     const { activeTopic, postMsg, updateThreadError, handleFormChange } = this.props;
     try {
-      await activeTopic.post(postMsg);
+      // Step 7 - make a post
       handleFormChange(null, 'postMsg');
     } catch (error) {
       updateThreadError(error);

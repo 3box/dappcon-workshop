@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import makeBlockie from 'ethereum-blockies-base64';
-import Box from '3box';
 import resolve from 'did-resolver';
-import ProfileHover from 'profile-hover';
 
 import '../styles/index.scss';
 
@@ -24,7 +22,7 @@ class ProfilePicture extends Component {
 
     if (this.props.did) { // profiles via listModerator or listMember
       const doc = await resolve(this.props.did);
-      const profile = await Box.getProfile(this.props.did);
+      const profile = {}
       profileName = profile.name;
       profilePicture = profile.image;
       ethAddr = doc.publicKey[2].ethereumAddress;
@@ -53,7 +51,6 @@ class ProfilePicture extends Component {
       <React.Fragment>
         {
           isUseHovers ? (
-            <ProfileHover noTheme address={ethAddr} orientation="left">
               <ProfileTile
                 image={image}
                 isTile={isTile}
@@ -62,7 +59,6 @@ class ProfilePicture extends Component {
                 isOwner={isOwner}
                 address={ethAddr}
               />
-            </ProfileHover>
           ) : (
               <ProfileTile
                 image={image}

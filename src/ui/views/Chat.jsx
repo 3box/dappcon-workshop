@@ -58,15 +58,15 @@ class Chat extends Component {
     // fetch topic data
     topicManager.getOwner(topic, (err, owner) => {
       topicManager.getMembers(topic, async (err, members) => {
-        const thread = await chatSpace.joinThread(topic, { firstModerator: owner, members });
+        // Step 3 - join Thread
+        const thread = 'the thread'
         openTopics[topic] = thread;
         this.setState({ activeTopic: openTopics[topic] });
 
-        thread.onUpdate(() => this.updateThreadPosts());
-        thread.onNewCapabilities(() => this.updateThreadCapabilities());
-
         this.updateThreadPosts();
         this.updateThreadCapabilities();
+        // Step 3 - add listener functions
+
       })
     })
   }
@@ -75,9 +75,10 @@ class Chat extends Component {
     const { activeTopic } = this.state;
     this.updateThreadError();
 
-    let threadData = [];
-    const posts = await activeTopic.getPosts();
-    posts.map(post => threadData.push(post))
+    let threadData = []
+    // Step 3 - get posts in thread
+    const posts = []
+    threadData.push(...posts)
     this.setState({ threadData });
   }
 
@@ -86,16 +87,16 @@ class Chat extends Component {
 
     // add thread members to state
     let threadMemberList = [];
-    if (activeTopic._members) {
-      const members = await activeTopic.listMembers();
-      members.map(member => threadMemberList.push(member));
-    };
+    // Step 4 - members of thread
+    const members = []
+    threadMemberList.push(...members)
     this.setState({ threadMemberList });
 
     // add thread mods to state
     let threadModeratorList = [];
-    const moderators = await activeTopic.listModerators();
-    moderators.map(moderator => threadModeratorList.push(moderator));
+    // Step 4 - moderators of thread
+    const moderators = []
+    threadModeratorList.push(...moderators)
     this.setState({ threadModeratorList });
   }
 

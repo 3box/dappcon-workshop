@@ -49,7 +49,7 @@ class AppModals extends Component {
     } = this.props;
 
     try {
-      await activeTopic.addMember(threadMember);
+      // Step 6 - add member
       updateThreadCapabilities();
       handleFormChange(null, 'threadMember');
       handleAppModals('AddNewMemberModal');
@@ -69,7 +69,7 @@ class AppModals extends Component {
     } = this.props;
 
     try {
-      await activeTopic.addModerator(threadMod);
+      // Step 6 - add moderator
       updateThreadCapabilities();
       handleFormChange(null, 'threadMod');
       handleAppModals('AddNewModeratorModal');

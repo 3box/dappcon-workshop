@@ -4,7 +4,7 @@ import {
   Route,
   withRouter
 } from 'react-router-dom';
-import Box from '3box';
+// Step 1 - import 3Box library here
 
 import { TopicManagerABI } from './utils/constants';
 
@@ -16,7 +16,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      box: {},
+      box: null,
       chatSpace: {},
       myAddress: '',
       myDid: '',
@@ -32,7 +32,7 @@ class App extends Component {
     const { history } = this.props;
 
     // if you haven't openedBox, return to login
-    if (!box.public) history.push('/');
+    if (!box) history.push('/');
     this.setState({ isAppReady: true });
   }
 
@@ -44,17 +44,19 @@ class App extends Component {
     // fetch initial topics
     this.getChatContractAndTopics();
 
-    // get my box and profile
-    const box = await Box.openBox(myAddress, window.ethereum, {});
-    const myProfile = await Box.getProfile(myAddress);
-    await new Promise((resolve, reject) => box.onSyncDone(resolve));
+    // Step 1 - add getProfile call
+    const myProfile = {}
+
+    // Step 2 - authenticate user and space
+    const box = 'authenticate 3box here'
+    // await onSyncDone
 
     // open 3chat space
-    const chatSpace = await box.openSpace('3chat');
-    const myDid = chatSpace.DID;
+    const chatSpace = 'the chat space'
+    const myDid = 'myDID'
 
     // set all to state and continue
-    this.setState({ chatSpace, box, myProfile, myAddress, myDid });
+    this.setState({ box, chatSpace, myDid, myProfile, myAddress });
     history.push('/chat');
   }
 
