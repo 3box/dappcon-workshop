@@ -286,12 +286,6 @@ a:active {
   box-sizing: border-box;
   height: 64px;
 
-  a {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
   h3 {
     font-size: 28px;
   }
@@ -299,6 +293,12 @@ a:active {
   img {
     width: 34px;
   }
+}
+
+.topics_nav_user {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .topics_list {

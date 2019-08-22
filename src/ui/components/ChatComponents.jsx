@@ -68,7 +68,11 @@ export const ChatInput = (props) => (
     />
 
     <div className="postEntry_image">
-      <button onClick={props.postThread} className="textButton">
+      <button
+        onClick={props.postThread}
+        disabled={!props.topicTitle}
+        className="textButton"
+      >
         <img src={SendIcon} alt="Send" />
       </button>
     </div>

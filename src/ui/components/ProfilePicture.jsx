@@ -51,14 +51,14 @@ class ProfilePicture extends Component {
       <React.Fragment>
         {
           isUseHovers ? (
-              <ProfileTile
-                image={image}
-                isTile={isTile}
-                profileName={profileName}
-                isModerator={isModerator}
-                isOwner={isOwner}
-                address={ethAddr}
-              />
+            <ProfileTile
+              image={image}
+              isTile={isTile}
+              profileName={profileName}
+              isModerator={isModerator}
+              isOwner={isOwner}
+              address={ethAddr}
+            />
           ) : (
               <ProfileTile
                 image={image}
@@ -80,7 +80,7 @@ export default ProfilePicture;
 const ProfileTile = ({ image, isTile, profileName, isModerator, isOwner, address }) => (
   <div className="profileTile">
     <div className="profileTile_info">
-      <a href={`https://3box.io/${address}`} className="profileTile_info_link">
+      <a href={`https://3box.io/${address}`} className="profileTile_info_link" target="_blank" rel="noopener noreferrer">
         {image ? (
           <img
             src={image}

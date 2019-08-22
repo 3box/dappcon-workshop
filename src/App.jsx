@@ -24,6 +24,7 @@ class App extends Component {
       isAppReady: false,
       topicList: [],
       topicManager: {},
+      disableLogin: false,
     };
   }
 
@@ -37,9 +38,10 @@ class App extends Component {
   }
 
   handleLogin = async () => {
-    const { history } = this.props
+    const { history } = this.props;
     const addresses = await window.ethereum.enable();
     const myAddress = addresses[0];
+    this.setState({ disableLogin: true });
 
     // fetch initial topics
     this.getChatContractAndTopics();
@@ -92,7 +94,8 @@ class App extends Component {
       topicList,
       myProfile,
       myAddress,
-      myDid
+      myDid,
+      disableLogin,
     } = this.state;
 
     return (
@@ -103,7 +106,7 @@ class App extends Component {
             <Route
               exact
               path='/'
-              render={() => <Cover handleLogin={this.handleLogin} />}
+              render={() => <Cover handleLogin={this.handleLogin} disableLogin={disableLogin} />}
             />
 
             <Route
