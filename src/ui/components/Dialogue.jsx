@@ -7,7 +7,27 @@ import '../styles/index.scss';
 class Dialogue extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {};
+  }
+  messagesEndRef = React.createRef();
+
+  componentDidMount() {
+    this.scrollToBottom();
+    const el = document.getElementsByClassName('edit__profile__value')[0];
+    el.addEventListener("keydown", this.searchEnter, false);
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  componentWillUnmount() {
+    const el = document.getElementsByClassName('edit__profile__value')[0];
+    el.removeEventListener("keydown", this.searchEnter, false);
+  }
+
+  scrollToBottom = () => {
+    this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   // create thread post from chat input
@@ -16,6 +36,7 @@ class Dialogue extends Component {
     try {
       await activeTopic.post(postMsg);
       handleFormChange(null, 'postMsg');
+      this.scrollToBottom();
     } catch (error) {
       updateThreadError(error);
     }
@@ -29,6 +50,13 @@ class Dialogue extends Component {
       updateThreadPosts();
     } catch (error) {
       updateThreadError(error);
+    }
+  }
+
+  searchEnter = (event) => {
+    const { topicTitle } = this.props;
+    if (event.keyCode === 13 && topicTitle) {
+      this.postThread();
     }
   }
 
@@ -66,17 +94,17 @@ class Dialogue extends Component {
               key={post.postId}
             />
           ))}
+          <div ref={this.messagesEndRef} />
         </div>
 
-        {topicTitle && (
-          <ChatInput
-            postThread={this.postThread}
-            handleFormChange={handleFormChange}
-            myAddress={myAddress}
-            myProfile={myProfile}
-            postMsg={postMsg}
-          />
-        )}
+        <ChatInput
+          postThread={this.postThread}
+          handleFormChange={handleFormChange}
+          myAddress={myAddress}
+          myProfile={myProfile}
+          postMsg={postMsg}
+          topicTitle={topicTitle}
+        />
       </section>
     );
   }

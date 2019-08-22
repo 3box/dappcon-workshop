@@ -84,7 +84,7 @@ export default ProfilePicture;
 const ProfileTile = ({ image, isTile, profileName, isModerator, isOwner, address }) => (
   <div className="profileTile">
     <div className="profileTile_info">
-      <a href={`https://3box.io/${address}`} className="profileTile_info_link">
+      <a href={`https://3box.io/${address}`} className="profileTile_info_link" target="_blank" rel="noopener noreferrer">
         {image ? (
           <img
             src={image}

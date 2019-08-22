@@ -4,7 +4,7 @@ import BoxLogo from '../components/3BoxLogo';
 import Face from '../../assets/3BoxFace.svg';
 import '../styles/index.scss';
 
-const Cover = ({ handleLogin }) => (
+const Cover = ({ handleLogin, disableLogin }) => (
   <div className="coverPage">
     <section className="coverPage_hero">
       <img src={Face} alt="face" />
@@ -15,7 +15,7 @@ const Cover = ({ handleLogin }) => (
           <BoxLogo />
         </div>
         <p className="coverPage_ui_wrapper_line">Where topics come alive</p>
-        <button onClick={handleLogin}>
+        <button onClick={handleLogin} disabled={disableLogin}>
           Get Started
         </button>
         <p className="coverPage_ui_wrapper_tech">powered by 3Box</p>

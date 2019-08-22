@@ -18,9 +18,9 @@ const Topics = (props) => {
     <section className="topics">
       <div className="topics_nav">
         <BoxLogo />
-        <a href={`https://3box.io/${myAddress}`} target="_blank" rel="noopener noreferrer">
+        <div className="topics_nav_user">
           <ProfilePicture myProfilePicture={image} myAddress={myAddress} myName={name} />
-        </a>
+        </div>
       </div>
 
       <div className="topics_list">
