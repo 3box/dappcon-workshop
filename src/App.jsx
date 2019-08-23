@@ -73,7 +73,7 @@ class App extends Component {
 
   getChatContractAndTopics = () => {
     const topicManager = web3.eth  // eslint-disable-line
-      .contract(TopicManagerABI).at('0x3895697Ad108a9a9cFaB326808194A6b41479cbD');
+      .contract(TopicManagerABI).at('0x0DE48af0d52f16B15d8Db6dAf015917AAf09F481');
 
     // get chat topics
     const getTopics = (i, err, topic) => {
